@@ -25,6 +25,9 @@ public:
 
     vector<int> searchRange(vector<int>& nums, int target) {
         int left = b_search(nums, target, true);
+        if (left == -1){
+            return {-1, -1};
+        }
         int right = b_search(nums, target, false);
 
         return {left, right};

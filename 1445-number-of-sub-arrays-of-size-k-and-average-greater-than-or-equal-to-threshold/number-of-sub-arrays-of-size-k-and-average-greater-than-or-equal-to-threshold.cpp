@@ -7,10 +7,10 @@ public:
         while (j<arr.size()){
             sum += arr[j];
             if (j-i+1 < k){
-                j+=1;
+                j++;
             } else{
                 if (sum/k >= threshold){
-                    ans+=1;
+                    ans++;
                 }
                 sum-=arr[i++];
                 j++;

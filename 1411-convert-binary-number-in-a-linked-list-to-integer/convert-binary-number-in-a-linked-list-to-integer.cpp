@@ -11,13 +11,21 @@
 class Solution {
 public:
     int getDecimalValue(ListNode* head) {
-        string number;
-        
+        vector<int> v;
+        int count = 0;
         while(head){
-            number+= to_string(head->val);
+            int value = head->val;
+            v.push_back(value);
+            count+=1;
             head = head->next;
         }
 
-        return stoi(number, 0, 2);
+        long long int num = 0;
+
+        for (int i=count-1; i>=0; i-=1){
+            num+=(v[i]*pow(2, count-1-i));
+        }
+
+        return num;
     }
 };

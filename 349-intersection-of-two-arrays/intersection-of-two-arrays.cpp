@@ -6,8 +6,8 @@ public:
 
         vector<int> ans;
 
-        for (auto it: set1){
-            if (set2.find(it)!=set2.end()){
+        for (auto it: set2){
+            if (set1.find(it)!=set1.end()){
                 ans.push_back(it);
             }
         }

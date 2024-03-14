@@ -12,25 +12,21 @@
 class Solution {
 public:
     int maxDepth(TreeNode* root) {
-        if (root == nullptr){
-            return 0;
-        }
-        queue<TreeNode*> q;
-        q.push(root);
+        // Iteravtive DFS
+        stack<pair<TreeNode*, int>> st;
+        st.push({root, 1});
         int ans = 0;
-        while (!q.empty()){
-            int count = q.size();
-            for (int i=0; i<count; i+=1){
-                TreeNode *temp = q.front();
-                q.pop();
-                if (temp->left != nullptr){
-                    q.push(temp->left);
-                }
-                if (temp->right != nullptr){
-                    q.push(temp->right);
-                }
+        while (!st.empty()){
+            pair<TreeNode*, int> p;
+            p = st.top();
+            TreeNode *node = p.first;
+            int depth = p.second;
+            st.pop();
+            if (node!=nullptr){
+                ans = max(ans, depth);
+                st.push({node->left, depth+1});
+                st.push({node->right, depth+1});
             }
-            ans+=1;
         }
 
         return ans;

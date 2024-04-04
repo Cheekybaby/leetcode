@@ -9,17 +9,14 @@ public:
     }
 private: // Binary Exponentiation
     long long power(long long x, long long n){
-        long long ans = 1;
-        while (n>0){
-            if (n%2){
-                ans = (ans*x)%mod;
-                n-=1;
-            } else {
-                x = (x*x)%mod;
-                n/=2;
-            }
-        }
+        if (n == 0) return 1;
 
-        return ans%mod;
+        long long temp = power(x, n/2);
+
+        if (n%2){
+            return (temp*temp*x)%mod;
+        } else {
+            return (temp*temp)%mod;
+        }
     }
 };

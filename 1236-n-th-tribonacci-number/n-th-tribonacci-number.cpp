@@ -3,13 +3,14 @@ public:
     int tribonacci(int n) {
         if (n == 0) return 0;
         if (n == 1 || n == 2) return 1;
-        vector<int> trib(n+1);
-        trib[1] = 1;
-        trib[2] = 1;
+        int t1 = 0, t2 = 1, t3 = 1, next;
         for (int i=3; i<=n; i+=1){
-            trib[i] = trib[i-1] + trib[i-2] + trib[i-3];
+            next = t1+t2+t3;
+            t1 = t2;
+            t2 = t3;
+            t3 = next;
         }
 
-        return trib[n];
+        return t3;
     }
 };

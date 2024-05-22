@@ -18,14 +18,23 @@ public:
         return pi;
     }
 
-    int strStr(string haystack, string needle) {
-        string s = needle+"#"+haystack;
-        vector<int> prefix = prefixfunc(s);
-        int n = needle.length();
-        for(int i=n+1; i<prefix.size(); i+=1){
-            if (prefix[i] == n) return (i-(2*n));
+    int strStr(string haystack, string needle) {     
+        vector<int> prefix = prefixfunc(needle); // Space used is O(needle.length())
+        int i=0, j=0;
+        while (i<haystack.length() && j<needle.length()){
+            if (haystack[i] == needle[j]){
+                i+=1;
+                j+=1;
+            } else {
+                if (j==0){
+                    i+=1;
+                } else {
+                    j = prefix[j-1];
+                }
+            }
         }
 
+        if (j == needle.length()) return i-j;
         return -1;
     }
 };

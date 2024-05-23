@@ -1,36 +1,41 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-    for (int row = 0; row < 9; row++){
-        unordered_set<char> check_row;
-        for (int col = 0; col < 9; col++){
-            if (board[row][col] != '.' && check_row.find(board[row][col]) != check_row.end()){
-                return false;
+        bool ans = true;
+        // Checking all the rows
+        for (int i=0; i<9; i+=1){
+            unordered_set<char> st;
+            for (int j=0; j<9; j+=1){
+                if (board[i][j] == '.') continue;
+                else if (st.count(board[i][j]) != 0) return false;
+                st.insert(board[i][j]);
             }
-            check_row.insert(board[row][col]);
         }
-    }
-    for (int col = 0; col < 9; col++){
-        unordered_set<char> check_col;
-        for (int row = 0; row < 9; row++){
-            if (board[row][col] != '.' && check_col.find(board[row][col]) != check_col.end()){
-                return false;
-            }
-            check_col.insert(board[row][col]);
-        }
-    }
 
-    vector<unordered_set<char>> check_subbox(9);
-    for (int row = 0; row < 9; row++){
-        for (int col = 0; col < 9; col++){
-            int loc = (row / 3) * 3 + col / 3;
-            if (board[row][col] != '.' && check_subbox[loc].find(board[row][col]) != check_subbox[loc].end()){
-                return false;
+        // Checking all the Columns
+        for(int i=0; i<9; i+=1){
+            unordered_set<char> st;
+            for (int j=0; j<9; j+=1){
+                if (board[j][i] == '.') continue;
+                else if (st.count(board[j][i]) != 0) return false;
+                st.insert(board[j][i]);
             }
-            check_subbox[loc].insert(board[row][col]);
         }
-    }
-    return true;
-}
 
+        // Checking every 3X3 sub-boxes
+        for (int i=0; i<9; i+=3){
+            for (int j=0; j<9; j+=3){
+                unordered_set<int> st;
+                for(int x=i; x<i+3; x+=1){
+                    for(int y=j; y<j+3; y+=1){
+                        if (board[x][y] == '.') continue;
+                        else if (st.find(board[x][y]) != 0) return false;
+                        st.insert(board[x][y]);
+                    }
+                }
+            }
+        }
+
+        return ans;
+    }
 };

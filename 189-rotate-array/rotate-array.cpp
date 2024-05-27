@@ -1,23 +1,25 @@
 class Solution {
 public:
     void rotate(vector<int>& nums, int k) {
-        vector<int> hashhh(k);
-        if (nums.size()==1){
-            return ;
-        }
-        if (k>nums.size()){
-            k%=nums.size();
-        }
-        for (int i=0; i<k; i+=1){
-            hashhh[i] = nums[nums.size()-k + i];
-        }
-        int rest = nums.size()-k;
-        for (int i=1; i<=rest; i+=1){
-            nums[nums.size()-i] = nums[nums.size()-k-i];
+        k%=nums.size();
+        int i=0, j=nums.size()-1;
+        while (i<=j){
+            swap(nums[i], nums[j]);
+            i+=1;
+            j-=1;
         }
 
-        for (int i=0; i<k; i+=1){
-            nums[i] = hashhh[i];
+        i=0, j=k-1;
+        while (i<=j){
+            swap(nums[i], nums[j]);
+            i+=1;
+            j-=1;
+        }
+        i=k, j=nums.size()-1;
+        while (i<=j){
+            swap(nums[i], nums[j]);
+            i+=1;
+            j-=1;
         }
     }
 };

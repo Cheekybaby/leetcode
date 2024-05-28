@@ -1,13 +1,11 @@
 class Solution {
 public:
     int countGoodSubstrings(string s) {
-        int count = 0;
-        int n = s.length();
-        for (int i=0; i<n-2; i++){
-            if (s[i]!=s[i+1] && s[i]!=s[i+2] && s[i+1]!=s[i+2]){
-                count++;
-            }
+        int ans = 0;
+        for (int i=1; i<s.length()-1; i+=1){
+            if (s[i]!=s[i-1] && s[i]!=s[i+1] && s[i-1]!=s[i+1])ans+=1;
         }
-        return count;
+
+        return ans;
     }
 };

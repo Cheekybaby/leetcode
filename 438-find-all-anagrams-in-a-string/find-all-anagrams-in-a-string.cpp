@@ -1,22 +1,30 @@
 class Solution {
 public:
-    vector<int> findAnagrams(string s, string p) {
-        vector<int> ans;
-        if (p.length() > s.length()) return ans;
-        vector<int> ph(26,0), window(26,0);
-        for (int i=0; i<p.length(); i+=1){
-            ph[p[i]-'a']+=1;
-            window[s[i]-'a']+=1;
+    bool anagram(vector<int> &v){
+        for (auto it:v){
+            if (it!=0) return false;
         }
 
-        if (ph == window) ans.push_back(0);
+        return true;
+    }
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> ph(26,0);
 
-        int i=0, j=p.length();
-        while (j<s.length()){
-            window[s[j]-'a']+=1;
-            window[s[i]-'a']-=1;
-            i+=1;
-            if (window == ph) ans.push_back(i);
+        for (int i=0; i<p.length(); i+=1){
+            ph[p[i]-'a']+=1;
+        }
+
+        int i=0, j=0;
+        vector<int> ans;
+        while(j<s.length()){
+            ph[s[j]-'a']-=1;
+            if (j-i+1 == p.length()){
+                if (anagram(ph)){
+                    ans.push_back(i);
+                }
+                ph[s[i]-'a']+=1;
+                i+=1;
+            }
             j+=1;
         }
 

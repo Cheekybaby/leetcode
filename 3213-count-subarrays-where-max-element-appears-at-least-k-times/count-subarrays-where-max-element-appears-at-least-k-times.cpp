@@ -1,25 +1,29 @@
+using ll = long long;
 class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int k) {
-        int maxi = INT_MIN;
-        for (auto it:nums){
-            maxi = max(it, maxi);
+        int maxele = 0;
+        for (int i=0; i<nums.size(); i+=1){
+            maxele = max(nums[i], maxele);
         }
-
+        
+        ll ans = 0, count = 0;
         int i=0, j=0;
-        long long count = 0;
         while (j<nums.size()){
-            if (nums[j] == maxi){
-                k--;
+            if (nums[j] == maxele){
+                count+=1;
             }
-            j+=1;
-            while (k == 0){
-                if (nums[i] == maxi) k+=1;
+            while (count == k){
+                if (nums[i] == maxele){
+                    count-=1;
+                }
                 i+=1;
             }
-            count+=i;
+
+            ans+=i;
+            j+=1;
         }
 
-        return count;
+        return ans;
     }
 };

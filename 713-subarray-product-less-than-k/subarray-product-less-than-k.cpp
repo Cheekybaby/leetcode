@@ -1,19 +1,24 @@
 class Solution {
 public:
-    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+    int numberofSubarrays(vector<int> &v, int x){
+        if (x<=0) return 0;
         int i=0, j=0;
-        int count = 0, prod = 1;
+        int ans = 0, pro = 1;
+        while (j<v.size()){
+            pro*=v[j];
 
-        while (j<nums.size()){
-            prod*=nums[j++];
-            while (i<j && prod >= k){
-                prod/=nums[i];
-                i++;
+            while (pro>x){
+                pro/=v[i];
+                i+=1;
             }
 
-            count+=(j-i);
+            ans+=(j-i+1);
+            j+=1;
         }
 
-        return count;
+        return ans;
+    }
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        return numberofSubarrays(nums, k-1);
     }
 };

@@ -1,30 +1,24 @@
 class Solution {
 public:
-    int numSubarraysWithSum(vector<int>& nums, int goal) {
-        int i=0, count = 0, ans = 0;
-        for (int  j=0; j<nums.size(); j+=1){
-            if (nums[j] == 1){
-                goal-=1;
-                count = 0;
-            }
+    int numberofSubarrays(vector<int> &v, int x){
+        int i=0, j=0;
+        int ans = 0, sum=0;
+        if (x < 0) return 0;
+        while(j<v.size()){
+            sum+=v[j];
 
-            while (goal == 0  && i<=j){
-                goal+=nums[i];
-                i+=1;
-                count+=1;
-                if (i>j-goal+1){
-                    break;
-                }
-            }
-
-            while (goal<0){
-                goal+=nums[i];
+            while (sum>x){
+                sum-=v[i];
                 i+=1;
             }
 
-            ans += count;
+            ans+=(j-i+1);
+            j+=1;
         }
 
         return ans;
+    }
+    int numSubarraysWithSum(vector<int>& nums, int goal) {
+        return numberofSubarrays(nums, goal) - numberofSubarrays(nums, goal-1);   
     }
 };

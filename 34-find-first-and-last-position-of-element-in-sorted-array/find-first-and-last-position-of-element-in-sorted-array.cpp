@@ -1,35 +1,36 @@
 class Solution {
 public:
-
-    int b_search(vector<int> &v, int x, bool first){
-        int left = -1, right = v.size();
-        int mid = midpoint(left, right);
-        int i = -1;
-            while (right-left>1){
-                mid = midpoint(left, right);
-                if (v[mid] > x){
-                    right = mid;
-                } else if (v[mid] < x){
-                    left = mid;
-                } else {
-                    i = mid;
-                    if (first){
-                        right = mid;
-                    } else {
-                        left = mid;
-                    }
-                }
-            }
-        return i;
-    }
-
-    vector<int> searchRange(vector<int>& nums, int target) {
-        int left = b_search(nums, target, true);
-        if (left == -1){
-            return {-1, -1};
+    int lowerbound(vector<int> &nums, int x){
+        int left = 0, right = nums.size()-1;
+        int ans = -1;
+        while (left<=right){
+            int mid = left + (right - left) /2;
+            if (nums[mid] == x){
+                ans = mid;
+                right = mid - 1;
+            } else if (nums[mid] > x) right = mid - 1;
+            else left = mid + 1; 
         }
-        int right = b_search(nums, target, false);
 
-        return {left, right};
+        return ans;
+    }
+    int upperbound(vector<int> &nums, int x){
+        int left = 0, right = nums.size()-1;
+        int ans = -1;
+        while (left <= right){
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == x){
+                ans = mid;
+                left = mid + 1;
+            } else if (nums[mid] > x) right = mid - 1;
+            else left = mid + 1;
+        }
+
+        return ans;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = lowerbound(nums, target);
+        int r = upperbound(nums, target);
+        return {l, r};
     }
 };

@@ -10,25 +10,21 @@
  */
 class Solution {
 public:
-    bool isPalindrome(ListNode* head) {
-        if (head == nullptr || head->next == nullptr) return head;
-        ListNode *prev = nullptr;
-        ListNode *current = head;
-        while (current){
-            ListNode *temp = new ListNode(current->val);
-            temp->next = prev;
-            prev = temp;
-            current = current->next;
+    bool checkPalindrome(vector<int> &v){
+        for (int i=0; i<v.size()/2; i+=1){
+            if (v[i] != v[v.size()-i-1]) return false;
         }
-        ListNode *temp = head;
-        while (temp && prev){
-            if (prev->val != temp->val){
-                return false;
-            }
-            temp = temp->next;
-            prev = prev->next;
+        return true;
+    }
+    bool isPalindrome(ListNode* head) {
+        if (head->next == nullptr) return true;
+
+        vector<int> v;
+        while (head!=nullptr){
+            v.push_back(head->val);
+            head = head->next;
         }
 
-        return true;
+        return checkPalindrome(v);
     }
 };

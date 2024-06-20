@@ -11,51 +11,31 @@
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        ListNode *ans = NULL, *curr = NULL;
+        if (list1 == nullptr && list2 == nullptr){
+            return nullptr;
+        }
+        if (list1 == nullptr) return list2;
+        if (list2 == nullptr) return list1;
 
-        while (list1!=NULL && list2!=NULL){
-            if (list1->val < list2->val){
-                if (ans == NULL){
-                    ans = list1;
-                    curr = list1;
-                } else {
-                    curr -> next = list1;
-                    curr = list1;
-                }
+        ListNode *temp = new ListNode();
+        ListNode *curr = temp;
+        while (list1!=nullptr && list2!=nullptr){
+            if (list1->val <= list2->val){
+                curr->next = list1;
                 list1 = list1->next;
             } else {
-                if (ans == NULL){
-                    ans = list2;
-                    curr = list2;
-                } else {
-                    curr -> next = list2;
-                    curr = list2;
-                }
+                curr->next = list2;
                 list2 = list2->next;
             }
+            curr = curr->next;
         }
 
-        while (list1!=NULL){
-            if (ans == NULL){
-                ans = list1;
-                curr = list1;
-            } else {
-                curr->next = list1;
-                curr = list1;
-            }
-            list1 = list1->next;
-        }
-        while (list2!=NULL){
-            if (ans == NULL){
-                ans = list2;
-                curr = list2;
-            } else {
-                curr->next = list2;
-                curr = list2;
-            }
-            list2 = list2->next;
+        if (list1 == nullptr){
+            curr->next = list2;
+        } else {
+            curr->next = list1;
         }
 
-        return ans;
+        return temp->next;
     }
 };

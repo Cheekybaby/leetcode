@@ -10,35 +10,50 @@
  */
 class Solution {
 public:
-    void reorderList(ListNode* head) {
-        if (head == nullptr || head->next == nullptr) return ;
-        vector<ListNode*> v;
-        int len = 0, i = 0;
-        ListNode *temp = head;
-        while (temp){
-            v.push_back(temp);
-            len+=1;
-            temp = temp->next;
+    ListNode* reverse(ListNode *head){
+        ListNode *prev = nullptr;
+        ListNode *curr = head;
+        while (curr){
+            ListNode *temp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = temp;
         }
-        for (i=0; i<len/2; i+=1){
-            if (i==0){
-                temp = v[i];
-                temp->next = v[len-i-1];
-                temp = temp->next;
-            } else {
-                temp->next = v[i];
-                temp = temp->next;
-                temp->next = v[len-i-1];
-                temp = temp->next;
+
+        return prev;
+    }
+    void merge(ListNode *list1, ListNode *list2){
+        while (list1){
+            ListNode *p = list1->next;
+            ListNode *q = list2->next;
+
+            list1->next = list2;
+            if (p == nullptr){
+                break;
             }
-        }
+            list2->next = p;
 
-        if (len%2){
-            temp->next = v[i];
-            temp = temp->next;
+            list1 = p;
+            list2 = q;
         }
-
-        temp->next = nullptr;
-        return ;
+    }
+    void reorderList(ListNode* head) {
+        // Break into two halves from between
+        // Reverse the next half
+        // Rearrange to create a new Linked List
+        if (head->next == nullptr){
+            return ;
+        }
+        ListNode *slow = head, *fast = head, *prev = nullptr;
+        while (fast != nullptr && fast->next!=nullptr){
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        prev->next = nullptr;
+        ListNode *list1 = head;
+        ListNode *list2 = reverse(slow);
+        
+        merge(list1, list2);
     }
 };

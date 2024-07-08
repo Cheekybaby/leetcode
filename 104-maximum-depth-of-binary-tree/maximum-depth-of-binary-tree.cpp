@@ -12,23 +12,21 @@
 class Solution {
 public:
     int maxDepth(TreeNode* root) {
-        // Iteravtive DFS
-        stack<pair<TreeNode*, int>> st;
-        st.push({root, 1});
-        int ans = 0;
-        while (!st.empty()){
-            pair<TreeNode*, int> p;
-            p = st.top();
-            TreeNode *node = p.first;
-            int depth = p.second;
-            st.pop();
-            if (node!=nullptr){
-                ans = max(ans, depth);
-                st.push({node->left, depth+1});
-                st.push({node->right, depth+1});
+        int height = 0;
+        if (root == nullptr) return height;
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()){
+            height+=1;
+            int len = q.size();
+            for (int i=0; i<len; i+=1){
+                TreeNode *node = q.front();
+                q.pop();
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
         }
 
-        return ans;
+        return height;
     }
 };

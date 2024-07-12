@@ -15,12 +15,16 @@ public:
     void flatten(TreeNode* root) {
         if (root == nullptr) return ;
 
-        flatten(root->right);
-        flatten(root->left);
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode *node = st.top();
+            st.pop();
+            if (node->right) st.push(node->right);
+            if (node->left) st.push(node->left);
 
-        root->right = prev;
-        root->left = nullptr;
-
-        prev = root;
+            if (!st.empty()) node->right = st.top();
+            node->left = nullptr;
+        }
     }
 };

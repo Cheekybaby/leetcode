@@ -11,19 +11,13 @@
  */
 class Solution {
 public:
-    bool traversal(TreeNode* p, TreeNode* q){
-        if (p == nullptr || q == nullptr){
-            return p == q;
-        }
-        if (p->val != q->val){
-            return false;
-        }
+    bool helper(TreeNode *node1, TreeNode *node2){
+        if (node1 == nullptr || node2 == nullptr) return node1 == node2;
 
-        return traversal(p->left, q->right) && traversal(p->right, q->left);
+        return (node1->val == node2->val && helper(node1->left, node2->right) && helper(node1->right, node2->left));
     }
     bool isSymmetric(TreeNode* root) {
         if (root == nullptr) return true;
-
-        return traversal(root->left, root->right);
+        return helper(root->left, root->right);
     }
 };

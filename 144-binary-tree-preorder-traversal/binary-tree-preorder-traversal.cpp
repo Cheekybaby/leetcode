@@ -11,19 +11,17 @@
  */
 class Solution {
 public:
-    vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> traversal;
-        stack<TreeNode*> st;
-        if (root == nullptr) return traversal;
-        st.push(root);
-        while (!st.empty()){
-            TreeNode *node = st.top();
-            st.pop();
-            traversal.push_back(node->val);
-            if (node->right) st.push(node->right);
-            if (node->left) st.push(node->left);
-        }
+    // Recursive Approach
+    void traversal(TreeNode *root, vector<int> &v){
+        if (root == nullptr) return ;
 
-        return traversal;
+        v.push_back(root->val);
+        traversal(root->left, v);
+        traversal(root->right, v);
+    }
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        traversal(root, ans);
+        return ans;
     }
 };

@@ -15,12 +15,13 @@ public:
     int height(TreeNode *root){
         if (root == nullptr) return 0;
 
-        int left_h = height(root->left);
-        int right_h = height(root->right);
+        int lh = height(root->left);
+        int rh = height(root->right);
+        
+        diameter = max(diameter, lh+rh);
 
-        diameter = max(diameter, left_h + right_h);
+        return 1 + max(lh, rh);
 
-        return 1 + max(left_h, right_h);
     }
     int diameterOfBinaryTree(TreeNode* root) {
         height(root);

@@ -11,20 +11,20 @@
  */
 class Solution {
 public:
-    int traverse(TreeNode *root){
+    int height(TreeNode *root){
         if (root == nullptr) return 0;
 
-        int left_h = traverse(root->left);
-        if (left_h == -1) return -1;
+        int lh = height(root->left);
+        if (lh == -1) return -1;
 
-        int right_h = traverse(root->right);
-        if (right_h == -1) return -1;
+        int rh = height(root->right);
+        if (rh == -1) return -1;
 
-        if (abs(left_h - right_h) > 1) return -1;
+        if (abs(lh - rh) > 1) return -1;
 
-        return max(left_h, right_h) + 1;
+        return 1 + max(lh, rh);
     }
     bool isBalanced(TreeNode* root) {
-        return traverse(root) != -1;
+        return height(root) != -1;
     }
 };

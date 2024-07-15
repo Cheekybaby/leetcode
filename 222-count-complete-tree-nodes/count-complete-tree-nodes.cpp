@@ -11,19 +11,17 @@
  */
 class Solution {
 public:
-    void inorder(TreeNode *root, int &count){
-        if (root == nullptr){
-            return ;
-        }
+    void traversal(TreeNode* root, int &count){
+        if (root == nullptr) return ;
 
         count+=1;
-
-        inorder(root->left, count);
-        inorder(root->right, count);
+        traversal(root->right, count);
+        traversal(root->left, count);
     }
     int countNodes(TreeNode* root) {
-        int nodes = 0;
-        inorder(root, nodes);
-        return nodes;
+        int count = 0;
+        traversal(root, count);
+
+        return count;
     }
 };

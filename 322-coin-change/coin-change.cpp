@@ -7,7 +7,7 @@ public:
 
         int minCoins = INT_MAX;
 
-        for (int i=0; i<coins.size(); i+=1){
+        for (int i=0; i<coins.size(); i++){
             int res = solve(coins, amount - coins[i], memo);
 
             if (res != INT_MAX){

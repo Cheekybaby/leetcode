@@ -1,29 +1,25 @@
 class Solution {
 public:
     int solve(vector<int> &coins, int amount, vector<int> &memo){
-        if (amount < 0) return INT_MAX;
         if (amount == 0) return 0;
+        if (amount < 0) return INT_MAX;
         if (memo[amount] != -1) return memo[amount];
 
-        int minCoins = INT_MAX;
+        int ans = INT_MAX;
 
-        for (int i=0; i<coins.size(); i++){
-            int res = solve(coins, amount - coins[i], memo);
+        for (int coin: coins){
+            int res = solve(coins, amount - coin, memo);
 
             if (res != INT_MAX){
-                minCoins = min(minCoins, 1 + res);
+                ans = min(ans, 1 + res);
             }
         }
-        memo[amount] = minCoins;
+        memo[amount] = ans;
         return memo[amount];
     }
     int coinChange(vector<int>& coins, int amount) {
-        if (amount == 0) return 0;
         vector<int> memo(10001, -1);
         int ans = solve(coins, amount, memo);
-        if (ans == INT_MAX){
-            return -1;
-        }
-        return ans;
+        return (ans == INT_MAX) ? -1 : ans;
     }
 };

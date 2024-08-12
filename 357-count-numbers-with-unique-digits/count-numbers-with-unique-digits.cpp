@@ -12,19 +12,24 @@
     - For n = 6, it is 168571
     - For n = 7, it is 712891
     - For n = 8, it is 2345851
+
+- 
 */
 
 class Solution {
 public:
+    int solve(int n){
+        if (n <= 1) return 1;
+        return n * solve(n-1);
+    }
     int countNumbersWithUniqueDigits(int n) {
-        if (n == 0) return 1;
-        else if (n == 1) return 10;
-        else if (n == 2) return 91;
-        else if (n == 3) return 739;
-        else if (n == 4) return 5275;
-        else if (n == 5) return 32491;
-        else if (n == 6) return 168571;
-        else if (n == 7) return 712891;
-        else return 2345851;
+        int ans = 1;
+        int x = solve(9);
+        for (int i=1; i<=min(9, n); i+=1){
+            int y = solve(10 - i);
+            ans+=(9*(x/y));
+        }
+
+        return ans;
     }
 };

@@ -1,26 +1,27 @@
 class Solution {
 public:
-    bool sub(vector<int>&nums,int target,int ind,vector<vector<int>>&dp){
-        if(target==0) return true;
-        if(ind==0) return (nums[0]==target);
-        if(dp[target][ind]!=-1) return dp[target][ind];
-        bool notTake=sub(nums,target,ind-1,dp);
-        bool Take=false;
-        if(target>=nums[ind]) Take=sub(nums,target-nums[ind],ind-1,dp);
-        return dp[target][ind]=(notTake|| Take);
+    bool solve(vector<int> &nums, int target, int index, int curr_sum, vector<vector<int>> &memo){
+        if (index == nums.size()) return 0;
+        if (curr_sum == target) return 1;
+        if (curr_sum > target) return 0;
+        if (memo[index][curr_sum] != -1) return memo[index][curr_sum];
+
+        bool take = solve(nums, target, index + 1, curr_sum + nums[index], memo);
+        bool not_take = solve(nums, target, index + 1, curr_sum, memo);
+
+        memo[index][curr_sum] = (take || not_take);
+        return memo[index][curr_sum];
     }
     bool canPartition(vector<int>& nums) {
-        int n=nums.size();
-        int totalSum=0;
+        int sum = 0;
+        for (auto x:nums){
+            sum+=x;
+        }
 
-        for(auto it:nums) totalSum+=it;
-        if(totalSum%2) return false;
-        int target=totalSum/2;
-        vector<vector<int>>dp(target+1,vector<int>(n+1,-1));
-        if(sub(nums,target,n-1,dp)) return true;
-        return false;
-
-         
+        if (sum % 2 == 1){
+            return false;
+        }
+        vector<vector<int>> memo (nums.size(), vector<int> (20005, -1));
+        return solve(nums, sum/2, 0, 0, memo);
     }
 };
- 

@@ -1,19 +1,20 @@
 class Solution {
 public:
-    int solve(int n, int m, string &word1, string &word2, vector<vector<int>> &memo){
-        if (n == 0 || m == 0) return 0;
-        if (memo[n][m] != -1) return memo[n][m];
-
-        if (word1[n-1] == word2[m-1]){
-            return memo[n][m] = 1 + solve(n-1, m-1, word1, word2, memo);
-        } else {
-            return memo[n][m] = max(solve(n, m-1, word1, word2, memo), solve(n-1, m, word1, word2, memo));
-        }
-    }
     int minDistance(string word1, string word2) {
-        vector<vector<int>> dp(word1.length() + 1, vector<int> (word2.length() + 1, -1));
-        int common = solve(word1.length(), word2.length(), word1, word2, dp);
+        vector<vector<int>> dp(word1.length() + 1,
+                               vector<int>(word2.length() + 1, -1));
+        for (int i=0; i<=word1.length(); i+=1){
+            for (int j=0; j<=word2.length(); j+=1){
+                if (i == 0 || j == 0){
+                    dp[i][j] = 0;
+                } else if (word1[i-1] == word2[j-1]){
+                    dp[i][j] = 1 + dp[i-1][j-1];
+                } else {
+                    dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+                }
+            }
+        }
 
-        return (word1.length() + word2.length()) - (2 * common);
+        return (word1.length() + word2.length()) - (2 * dp[word1.length()][word2.length()]);
     }
 };

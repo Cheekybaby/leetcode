@@ -1,7 +1,7 @@
 class Solution {
 public:
     int findDuplicate(vector<int>& nums) {
-        set<int> st;
+        unordered_set<int> st;
         for (int i=0; i<nums.size(); i+=1){
             if (st.count(nums[i]) == 1){
                 return nums[i];

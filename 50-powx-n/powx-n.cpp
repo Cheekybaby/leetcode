@@ -1,16 +1,15 @@
 class Solution {
 public:
     double power(double x, long long n){
-        if (n == 0) return 1.0;
-
-        if (n<0) return 1.0/power(x, -n);
-
+        if (n == 0) return 1;
+        
+        if (n < 0) return 1.0 / power(x, -n);
         if (n%2){
-            double result = power(x, n/2);
-            return result*result*x;
+            double res = power(x, n/2);
+            return res * res * x;
         } else {
-            double result = power(x, n/2);
-            return result*result;
+            double res = power(x, n/2);
+            return res * res;
         }
     }
     double myPow(double x, int n) {

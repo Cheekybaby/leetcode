@@ -8,44 +8,45 @@
  */
 class Solution {
 public:
+    int lengthOfLL(ListNode *a){
+        int len = 0;
+        while (a != nullptr){
+            len+=1;
+            a = a->next;
+        }
+
+        return len;
+    }
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode *A = headA, *B = headB;
-        int lenA = 0, lenB = 0;
+        ListNode *A = headA;
+        ListNode *B = headB;
+        
+        int lenA = lengthOfLL(A);
+        int lenB = lengthOfLL(B);
 
-        while (A){
-            lenA+=1;
-            A = A->next;
-        }
-        while (B){
-            lenB+=1;
-            B = B->next;
-        }
-
-        A = headA;
-        B = headB;
+        int steps = abs(lenA - lenB);
 
         if (lenA > lenB){
-            int steps = lenA - lenB;
             while (steps){
-                A = A->next;
+                headA = headA->next;
                 steps-=1;
             }
         } else {
-            int steps = lenB - lenA;
             while (steps){
-                B = B->next;
+                headB = headB->next;
                 steps-=1;
             }
         }
 
-        while (A!=nullptr && B!=nullptr){
-            if (A == B){
-                return A;
+        while (headA != nullptr && headB != nullptr){
+            if (headA == headB){
+                return headA;
             }
-            A = A->next;
-            B = B->next;
+
+            headA = headA->next;
+            headB = headB->next;
         }
 
-        return A;
+        return nullptr;
     }
 };

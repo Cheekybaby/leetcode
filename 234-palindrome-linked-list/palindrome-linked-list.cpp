@@ -10,21 +10,31 @@
  */
 class Solution {
 public:
-    bool checkPalindrome(vector<int> &v){
-        for (int i=0; i<v.size()/2; i+=1){
-            if (v[i] != v[v.size()-i-1]) return false;
+    bool isAPalindrome(vector<int> &v){
+        if (v.size() == 1) return true;
+
+        int i=0, j = v.size()-1;
+
+        while (i<=j){
+            if (v[i] != v[j]){
+                return false;
+            }
+            i+=1;
+            j-=1;
         }
+
         return true;
     }
     bool isPalindrome(ListNode* head) {
-        if (head->next == nullptr) return true;
-
         vector<int> v;
-        while (head!=nullptr){
-            v.push_back(head->val);
-            head = head->next;
+
+        ListNode *temp = head;
+
+        while (temp != nullptr){
+            v.push_back(temp->val);
+            temp = temp->next;
         }
 
-        return checkPalindrome(v);
+        return isAPalindrome(v);
     }
 };

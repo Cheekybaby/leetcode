@@ -6,7 +6,7 @@ public:
 
         int i=0, j=0;
         while (i<g.size()){
-            while (j<s.size() && s[j]<g[i]){
+            while (j<s.size() && (s[j] < g[i])){
                 j+=1;
             }
 

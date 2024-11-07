@@ -1,18 +1,27 @@
 class Solution {
 public:
-    void generate(int n, int open, int close, string s, vector<string> &ans){
-        if (open == n && close == n){
-            ans.push_back(s);
+    void solve(vector<string> &ans, int n, string &temp, int i=0, int j=0){
+        if (i == n && j == n){
+            ans.push_back(temp);
             return ;
         }
-        if (open < n)
-            generate(n, open+1, close, s+"(", ans);
-        if (close < open)
-            generate(n, open, close+1, s+")", ans);
+
+        if (i <= n-1){
+            temp.push_back('(');
+            solve(ans, n, temp, i+1, j);
+            temp.pop_back();
+        }
+
+        if (j <= n-1 && j < i){
+            temp.push_back(')');
+            solve(ans, n, temp, i, j+1);
+            temp.pop_back();
+        }
     }
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        generate(n, 0, 0, "", ans);
+        string temp;
+        solve(ans, n, temp);
 
         return ans;
     }

@@ -1,30 +1,25 @@
 class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) {
-        // Sort for monotonocity
         sort(nums.begin(), nums.end());
-        // Declare variables for storing ans and the difference
-        int ans = 0;
-        int diff = INT_MAX;
 
-        // Loop through the vector to find the ans
-        for(int i=0; i<nums.size(); i+=1){
-            for(int j=i+1; j<nums.size(); j+=1){
-                for(int k=j+1; k<nums.size(); k+=1){
-                    int sum = nums[i] + nums[j] + nums[k];
-                    // cout << sum << " ";
-                    int dif = abs(sum-target);
-                    // cout << dif << " ";
-                    if (dif < diff){
-                        ans = sum;
-                        diff = dif;
-                    }
-                    // cout << diff << endl;
+        int ans = nums[0] + nums[1] + nums[2];
+
+        for (int i=0; i<nums.size(); i+=1){
+            int l = i+1, r = nums.size()-1;
+
+            while (l < r){
+                int sum = nums[i] + nums[l] + nums[r];
+
+                if (sum == target) return target;
+                else if (abs(sum-target) < abs(target - ans)) {
+                    ans = sum;
                 }
+                else if (sum < target) l+=1;
+                else if (sum > target) r-=1;
             }
         }
 
         return ans;
-
     }
 };

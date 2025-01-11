@@ -1,16 +1,25 @@
 class Solution {
 public:
     vector<vector<int>> generate(int numRows) {
-        vector<vector<int>> triangle;
-        triangle.push_back({1});
-        for (int i=1; i<numRows; i+=1){
-            vector<int> row(i+1, 1);
-            for (int j=1; j<i; j+=1){
-                row[j] = triangle.back()[j-1] + triangle.back()[j];
+        if (numRows == 1) return {{1}};
+        vector<vector<int>> ans;
+        ans.push_back({1});
+        ans.push_back({1,1});
+        for(int i=2; i<numRows; i+=1){
+            vector<int> above = ans.back();
+            vector<int> curr;
+            for(int j=0; j<=i; j+=1){
+                if (j == 0 || j == i){
+                    curr.push_back(1);
+                    continue;
+                }
+                int n = above[j-1] + above[j];
+                curr.push_back(n);
             }
-            triangle.push_back(row);
+
+            ans.push_back(curr);
         }
 
-        return triangle;
+        return ans;
     }
 };

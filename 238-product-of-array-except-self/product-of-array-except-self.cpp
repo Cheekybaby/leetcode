@@ -4,7 +4,7 @@ public:
         vector<int> ans(nums.size(), 1);
         int product = 1;
         for(int i=0; i<nums.size(); i+=1){
-            ans[i] = product;
+            ans[i] *= product;
             product *= nums[i];
         }
         product = 1;

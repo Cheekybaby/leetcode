@@ -19,32 +19,23 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        if (!root) return root;
-
+        if(!root) return root;
         queue<Node*> q;
         q.push(root);
 
         while(!q.empty()){
             int n = q.size();
-            vector<Node*> v(n);
+            Node *prev = nullptr;
+
             for(int i=0; i<n; i++){
-                Node* curr = q.front();
+                Node *curr = q.front();
                 q.pop();
-                v[i] = curr;
+
+                if(prev) prev->next = curr;
+                prev = curr;
 
                 if(curr->left) q.push(curr->left);
                 if(curr->right) q.push(curr->right);
-            }
-
-            for(int i=0; i<n; i++){
-                if (i == n-1){
-                    Node *curr = v[i];
-                    curr->next = nullptr;
-                    continue;
-                }
-                Node *curr = v[i];
-                Node *nex = v[i+1];
-                curr->next = nex;
             }
         }
 

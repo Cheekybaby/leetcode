@@ -1,33 +1,36 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        vector<vector<int>> vc(s.length(), vector<int>(s.length(), 0));
-        int len = 1, start = 0;
-        // Length 1 substring
-        for (int i = 0; i < s.length(); i += 1) {
-            vc[i][i] = 1;
+        int n = s.length();
+        vector<vector<bool>> dp(n, vector<bool> (n, false));
+        
+        // All length 1 substrings are palindromic
+        
+        int len = 1, st = 0;
+        for(int i=0; i<n; i++){
+            dp[i][i] = true;
         }
 
-        // Length 2 substring
-        for (int i = 0; i < s.length() - 1; i += 1) {
-            if (s[i] == s[i + 1]) {
-                start = i;
+        // For length 2
+        for(int i=0; i<n-1; i++){
+            if(s[i] == s[i+1]){
                 len = 2;
-                vc[i][i + 1] = 1;
+                st = i;
+                dp[i][i+1] = true;
             }
         }
-
-        // Length > 2 substring
-        for (int k = 3; k < s.length() + 1; k += 1) {
-            for (int i = 0; i < s.length() - k + 1; i += 1) {
-                int j = i + k - 1;
-                if (s[i] == s[j] && vc[i + 1][j - 1]) {
-                    vc[i][j] = 1;
-                    len = max(len, k);
-                    start = i;
+        for(int k=3; k<=n; k++){
+            for(int i=0; i<n-k+1; i++){
+                int j = i+k-1;
+                if (s[i] == s[j] && dp[i+1][j-1]){
+                    len = k;
+                    st = i;
+                    dp[i][j] = true;
                 }
             }
         }
-        return s.substr(start, len);
+
+
+        return s.substr(st, len);
     }
 };

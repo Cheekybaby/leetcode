@@ -1,17 +1,24 @@
 class Solution {
 public:
-    int solve(vector<vector<int>> &triangle, int m, int n, vector<vector<int>> &memo){
-        int r = triangle.size();
-        int c = triangle[m].size();
-
-        if (m >= r || n < 0 || n >= c) return 1000000;
-        if (m == r-1) return triangle[m][n];
-        if (memo[m][n] != -1) return memo[m][n];
-
-        return memo[m][n] = triangle[m][n] + min(solve(triangle, m+1, n, memo), solve(triangle, m+1, n+1, memo));
-    }
     int minimumTotal(vector<vector<int>>& triangle) {
-        vector<vector<int>> dp(triangle.size(), vector<int> (triangle.size(), -1));
-        return solve(triangle, 0, 0, dp);
+        vector<vector<int>> dp;
+        dp.push_back(triangle[0]);
+        for(int i=1; i<triangle.size(); i++){
+            vector<int> temp(triangle[i].size());
+            for(int j=0; j<triangle[i].size(); j++){
+                int left = (j-1 >= 0) ? dp[i-1][j-1] : 100000;
+                int up = (j < triangle[i-1].size()) ? dp[i-1][j] : 100000;
+
+                temp[j] = triangle[i][j] + min(left, up);
+            }
+            dp.push_back(temp);
+        }
+
+        int ans = 100000;
+        for(int i=0; i<dp[dp.size()-1].size(); i++){
+            ans = min(dp[dp.size()-1][i], ans);
+        }
+
+        return ans;
     }
 };

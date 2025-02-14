@@ -1,23 +1,20 @@
 class ProductOfNumbers {
 public:
-    vector<int> ip;
-    ProductOfNumbers() {
-        
-    }
+    vector<int> ip{1};
+    ProductOfNumbers() {}
     
     void add(int num) {
-        ip.push_back(num);
+        if (num != 0) {
+            ip.push_back(num*ip.back());
+        }
+        else {
+            ip.clear();
+            ip.push_back(1);
+        }
     }
     
     int getProduct(int k) {
-        int i = ip.size()-1;
-        int product = 1;
-        while(k--){
-            product *= ip[i];
-            i--;
-        }
-
-        return product;
+        return (k < ip.size()) ? (ip.back() / ip[ip.size() - k - 1]) : 0;
     }
 };
 

@@ -1,35 +1,15 @@
 class Solution {
 public:
+    vector<int> lookupTable = {1, 81, 100, 1296, 2025, 3025, 6724, 8281, 9801, 10000, 55225, 88209, 136161, 136900, 143641, 171396, 431649, 455625, 494209, 571536, 627264, 826281, 842724, 893025, 929296, 980100, 982081, 998001, 1000000};
     int punishmentNumber(int n) {
-        vector<int> v;
-        for(int i=1; i<=n; i+=1){
-            string num = to_string(i*i);
-            if(check(num, i)){
-                v.push_back(i*i);
-            }
-        }
         int ans = 0;
-        for(int i=0; i<v.size(); i++){
-            ans += v[i];
+        int i=0;
+        int val = n*n;
+        while((i<lookupTable.size()) && (lookupTable[i] <= val)){
+            ans += lookupTable[i];
+            i++;
         }
 
         return ans;
-    }
-private:
-    bool check(string &s, int n) {
-        if (s == "" && n == 0) return true;
-
-        if (n < 0) return false;
-
-        for(int i=0; i<s.length(); i++){
-            string left = s.substr(0, i+1);
-            string right = s.substr(i+1);
-
-            int l = stoi(left);
-
-            if(check(right, n - l)) return true;
-        }
-
-        return false;
     }
 };

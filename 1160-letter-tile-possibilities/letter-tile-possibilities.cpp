@@ -1,31 +1,26 @@
 class Solution {
 public:
     int numTilePossibilities(string tiles) {
-        unordered_set<string> ans;
-        string temp;
-        vector<bool> used(tiles.length(), false);
+        int count[26] = {0};
 
-        solve(tiles, temp, used, ans);
-
-        for (auto& it : ans) {
-            cout << it << endl;
+        for(char c:tiles){
+            count[c - 'A']++;
         }
 
-        return ans.size()-1;
+        return solve(count);
     }
 
 private:
-    void solve(string& s, string& temp, vector<bool>& used,
-               unordered_set<string>& ans) {
-        ans.insert(temp);
-        for (int i = 0; i < s.length(); i++) {
-            if (!used[i]) {
-                temp.push_back(s[i]);
-                used[i] = true;
-                solve(s, temp, used, ans);
-                temp.pop_back();
-                used[i] = false;
-            }
+    int solve(int count[26]) {
+        int total = 0;
+        for (int i=0; i<26; i++){
+            if (count[i] == 0) continue;
+
+            count[i]--;
+            total += (1 + solve(count));
+            count[i]++;
         }
+
+        return total;
     }
 };

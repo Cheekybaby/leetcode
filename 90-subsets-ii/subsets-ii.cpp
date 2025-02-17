@@ -13,19 +13,16 @@ public:
 private:
     void solve(vector<int>& nums, vector<vector<int>>& ans, vector<int>& temp,
                int index) {
-        if (index == nums.size()) {
-            ans.push_back(temp);
-            return;
+        ans.push_back(temp);
+
+        for(int i=index; i<nums.size(); i++){
+            if (i > index && nums[i] == nums[i-1]){
+                continue;
+            }
+
+            temp.push_back(nums[i]);
+            solve(nums, ans, temp, i+1);
+            temp.pop_back();
         }
-
-        temp.push_back(nums[index]);
-        solve(nums, ans, temp, index + 1);
-        temp.pop_back();
-
-        while (index + 1 < nums.size() && nums[index] == nums[index + 1]) {
-            index++;
-        }
-
-        solve(nums, ans, temp, index + 1);
     }
 };

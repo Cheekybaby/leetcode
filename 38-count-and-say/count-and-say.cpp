@@ -1,24 +1,30 @@
 class Solution {
 public:
     string countAndSay(int n) {
-        if (n == 1) return "1";
-        if (n == 2) return "11";
-        string res;
+        vector<string> dp(n+1);
 
-        string s = countAndSay(n-1);
+        dp[1] = "1";
 
-        for(int i=0; i<s.length(); i++){
-            char c = s[i];
-            int cnt = 0;
-            while(i<s.length() && s[i] == c){
-                cnt++;
-                i++;
+        for(int i=2; i<=n; i++){
+            string s = dp[i-1];
+            string res;
+
+            for(int j = 0; j<s.length(); j++){
+                char c = s[j];
+                int cnt = 0;
+
+                while(j < s.length() && s[j] == c){
+                    j++;
+                    cnt++;
+                }
+
+                res += (to_string(cnt) + c);
+                j--;
             }
 
-            res += (to_string(cnt) + c);
-            i--;
+            dp[i] = res;
         }
 
-        return res;
+        return dp[n];
     }
 };

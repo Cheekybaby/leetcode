@@ -11,30 +11,29 @@
  */
 class Solution {
 public:
-    TreeNode* recoverFromPreorder(string traversal) {
+    TreeNode* recoverFromPreorder(string t) {
         stack<TreeNode*> st;
-        int height = 0;
-
-        while(height < traversal.length()) {
+        int i = 0;
+        while(i < t.size()){
             int depth = 0;
-            while(height < traversal.length() && traversal[height] == '-'){
+            while(i < t.size() && t[i] == '-'){
                 depth++;
-                height++;
+                i++;
             }
 
-            int val = 0;
-            while(height < traversal.length() && (traversal[height] >= '0' && traversal[height] <= '9')){
-                val = val*10 + (traversal[height] - '0');
-                height++;
+            int value = 0;
+            while(i < t.size() && (t[i] >= '0' && t[i] <= '9')){
+                value = value*10 + (t[i] - '0');
+                i++;
             }
 
-            TreeNode *node = new TreeNode(val);
+            TreeNode *node = new TreeNode(value);
 
-            while(st.size() > depth) {
+            while(st.size() > depth){
                 st.pop();
             }
 
-            if (!st.empty()) {
+            if (!st.empty()){
                 if (st.top()->left == nullptr) {
                     st.top()->left = node;
                 } else {

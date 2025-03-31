@@ -1,8 +1,8 @@
 func containsDuplicate(nums []int) bool {
     seen := make(map[int]bool)
 
-    for i:=0; i<len(nums); i++ {
-        seen[nums[i]] = true;
+    for _, num := range nums {
+        seen[num] = true;
     }
 
     return len(nums) != len(seen);

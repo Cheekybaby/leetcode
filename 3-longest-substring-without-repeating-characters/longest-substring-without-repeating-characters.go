@@ -1,11 +1,14 @@
 func lengthOfLongestSubstring(s string) int {
-    mpp := make(map[rune]int)
+    var mpp [256]int
+    for i := range mpp {
+        mpp[i] = -1
+    }
     i, j := 0, 0
     ans := 0
     for j=0; j<len(s);  {
-        char := rune(s[j])
-        val, ok := mpp[char]
-        if ok && val != j && val >= i {
+        char := (s[j])
+        val := mpp[char]
+        if val != -1 && val != j && val >= i {
             // Reset the sliding window
             mpp[char] = j
             i = val + 1

@@ -56,10 +56,6 @@ func longestPalindrome(s string) string {
                 end++
             }
         }
-
-        if len(pal) == len(s) {
-            return s
-        }
         i++
         j++
         k++

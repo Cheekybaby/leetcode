@@ -1,43 +1,69 @@
-// If we can check that if a string is palindrome or not in constant time, this can be 
-// solved in O(n^2) time complexity.
-// It is understandable that it'll require some space: O(n^2)
 func longestPalindrome(s string) string {
-    n := len(s)
-    dp := make([][]int, n)
-    for i:= range dp {
-        dp[i] = make([]int, n)
+    if len(s) == 1 {
+        return s
     }
-    len, idx := 1, 0
-    // For length 1, all are palindrome
-    for i:= range dp {
-        dp[i][i] = 1
-    }
-    // For length 2
-    for i:=0; i<n-1; i++ {
-        if s[i] == s[i+1] {
-            dp[i][i+1] = 1
-            len = 2
-            idx = i
-        }
-    }
-    // For length 3 and above
-    for k:=3; k<=n; k++ {
-        for i:=0; i<=n-k; i++ {
-            j:=i+k-1;
-            if s[i] == s[j] && dp[i+1][j-1] != 0 {
-                dp[i][j] = 1
-                len = max(len, j-i+1)
-                idx = i
+
+    i:=0
+    j:=i+1
+    k:=i+2
+
+    pal := string(s[0])
+
+    for i<j && j<k && k<len(s)+1 {
+        // Check for length 2
+        if s[i] == s[j] {
+            new_pal := s[i:j+1]
+            if len(new_pal) > len(pal) {
+                pal = new_pal
+            }
+            // Check for length greater than 2
+            start := i-1
+            end := j+1
+            for start>=0 && end<len(s) {
+                if s[start] == s[end] {
+                    new_pal := s[start:end+1]
+                    if len(new_pal) > len(pal) {
+                        pal = new_pal
+                    }
+
+                    start--
+                    end++
+                } else {
+                    break
+                }
             }
         }
+        // Check for length 3
+        if i<k && k<len(s) && s[i] == s[k] {
+            new_pal := s[i:k+1]
+            if len(new_pal) > len(pal) {
+                pal = new_pal
+            }
+            // Check for length > 3
+            start := i-1
+            end := k+1
+            for start>=0 && end<len(s) {
+                if s[start] == s[end] {
+                    new_pal := s[start:end+1]
+                    if len(new_pal) > len(pal) {
+                        pal = new_pal
+                    }
+                } else {
+                    break
+                }
+
+                start--
+                end++
+            }
+        }
+
+        if len(pal) == len(s) {
+            return s
+        }
+        i++
+        j++
+        k++
     }
 
-    return s[idx:(idx+len)]
-}
-
-func max(x, y int) int {
-    if x >= y {
-        return x
-    }
-    return y
+    return pal
 }

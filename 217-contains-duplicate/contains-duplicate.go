@@ -1,9 +1,12 @@
 func containsDuplicate(nums []int) bool {
-    seen := make(map[int]bool)
+    mpp := make(map[int]bool)
 
-    for _, num := range nums {
-        seen[num] = true;
+    for _, val := range nums {
+        if _, ok := mpp[val]; ok {
+            return true
+        }
+        mpp[val] = true
     }
 
-    return len(nums) != len(seen);
+    return false
 }

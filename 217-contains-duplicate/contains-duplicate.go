@@ -1,11 +1,22 @@
 func containsDuplicate(nums []int) bool {
-    mpp := make(map[int]bool)
+    if len(nums) < 2 {
+        return false
+    }
 
-    for _, val := range nums {
-        if _, ok := mpp[val]; ok {
-            return true
+    sorted := false
+
+    for !sorted {
+        sorted = true
+        for i:=0; i<len(nums)-1; i++ {
+            if nums[i] == nums[i+1] {
+                return true
+            }
+
+            if nums[i] > nums[i+1] {
+                nums[i], nums[i+1] = nums[i+1], nums[i]
+                sorted = false
+            }
         }
-        mpp[val] = true
     }
 
     return false

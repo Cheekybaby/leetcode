@@ -1,5 +1,5 @@
 func containsNearbyDuplicate(nums []int, k int) bool {
-    i := 0
+    i, l := 0, 0
     for i < len(nums) {
         j := i + 1
         for j <= i+k && j < len(nums) {
@@ -7,6 +7,11 @@ func containsNearbyDuplicate(nums []int, k int) bool {
                 return true
             }
             j++
+            l++
+
+            if l > 99999 {
+                return false
+            }
         }
         i++
     }

@@ -1,5 +1,6 @@
 func productExceptSelf(nums []int) []int {
-    answer := make([]int, len(nums))
+    size := len(nums)
+    answer := make([]int, size, size)
     for i:=0; i<len(answer); i++ {
         answer[i] = 1
     }

@@ -19,7 +19,5 @@ func productExceptSelf(nums []int) []int {
         product *= nums[i]
     }
 
-    fmt.Println(answer)
-
     return answer
 }

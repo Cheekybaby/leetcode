@@ -22,7 +22,11 @@ func lastStoneWeight(stones []int) int {
     return heap.Pop(maxHeap).(int)
 }
 
+// Define a new type as a slice of int
 type MaxHeap []int
+
+// The heap interface needs to implement 5 different functions
+// Len(), Less(), Push(), Pop(), Swap()
 
 func (h MaxHeap) Len() int {
     return len(h)

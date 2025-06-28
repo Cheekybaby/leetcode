@@ -1,13 +1,14 @@
 func findLHS(nums []int) int {
     sort.Ints(nums)
-    maxlen, i := 0, 0
-    for j:=0; j<len(nums); j++ {
-        if nums[j] - nums[i] == 1 {
-            maxlen = max(maxlen, (j-i+1))
+    j, maxlen := 0, 0
+    for i:=0; i<len(nums); i++ {
+        if nums[i] - nums[j] == 1 {
+            maxlen = max(maxlen, (i - j + 1))
         }
-        for nums[j] - nums[i] > 1 {
-            i++
+        for nums[i] - nums[j] > 1 {
+            j++
         }
     }
-    return maxlen;
+
+    return maxlen
 }

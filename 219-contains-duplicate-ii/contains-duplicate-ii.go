@@ -1,20 +1,21 @@
 func containsNearbyDuplicate(nums []int, k int) bool {
-    i, l := 0, 0
-    for i < len(nums) {
-        j := i + 1
-        for j <= i+k && j < len(nums) {
-            if nums[i] == nums[j] {
+    if k == 0 {
+        return false
+    }
+    set := make(map[int]bool)
+    j := 0
+    for i:=0; i<len(nums); i++ {
+        length := i - j
+        if length <= k {
+            if _, ok := set[nums[i]]; ok {
                 return true
             }
-            j++
-            l++
-
-            if l > 99999 {
-                return false
+            if length == k {
+                delete(set, nums[j])
+                j+=1
             }
         }
-        i++
+        set[nums[i]] = true
     }
-
     return false
 }

@@ -1,11 +1,3 @@
-/*
-- We save whole array in an unordered set.
-- We iterate through the unordered set finding the consecutive sequence.
-
-- We count everytime we get a length.
-- Return the maximum length found after the iteration ends.
-*/
-
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {

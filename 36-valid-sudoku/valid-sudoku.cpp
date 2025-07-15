@@ -1,41 +1,43 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        bool ans = true;
-        // Checking all the rows
-        for (int i=0; i<9; i+=1){
-            unordered_set<char> st;
-            for (int j=0; j<9; j+=1){
-                if (board[i][j] == '.') continue;
-                else if (st.count(board[i][j]) != 0) return false;
-                st.insert(board[i][j]);
+        // Check for valid rows
+        for(int i=0; i<9; i++){
+            unordered_set<int> st;
+            for(int j=0; j<9; j++){
+                if (board[i][j] <= '9' && board[i][j] > '0'){
+                    int x = board[i][j] - '0';
+                    if (st.count(x)) return false;
+                    st.insert(x);
+                }
             }
         }
-
-        // Checking all the Columns
-        for(int i=0; i<9; i+=1){
-            unordered_set<char> st;
-            for (int j=0; j<9; j+=1){
-                if (board[j][i] == '.') continue;
-                else if (st.count(board[j][i]) != 0) return false;
-                st.insert(board[j][i]);
+        // Check for valid cols
+        for(int i=0; i<9; i++){
+            unordered_set<int> st;
+            for(int j=0; j<9; j++){
+                if (board[j][i] <= '9' && board[j][i] > '0'){
+                    int x = board[j][i] - '0';
+                    if (st.count(x)) return false;
+                    st.insert(x);
+                }
             }
         }
-
-        // Checking every 3X3 sub-boxes
-        for (int i=0; i<9; i+=3){
-            for (int j=0; j<9; j+=3){
+        // Check for those 3x3 squares
+        for(int l=0; l<9; l+=3){
+            for(int k=0; k<9; k+=3){
                 unordered_set<int> st;
-                for(int x=i; x<i+3; x+=1){
-                    for(int y=j; y<j+3; y+=1){
-                        if (board[x][y] == '.') continue;
-                        else if (st.find(board[x][y]) != 0) return false;
-                        st.insert(board[x][y]);
+                for(int i=l; i<3+l; i++){
+                    for(int j=k; j<3+k; j++){
+                        if (board[i][j] <= '9' && board[i][j] > '0'){
+                            int x = board[i][j] - '0';
+                            if (st.count(x)) return false;
+                            st.insert(x);
+                        }
                     }
                 }
             }
         }
-
-        return ans;
+        return true;
     }
 };

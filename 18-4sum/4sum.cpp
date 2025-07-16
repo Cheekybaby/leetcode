@@ -1,22 +1,27 @@
+#define ll long long
 class Solution {
 public:
     vector<vector<int>> fourSum(vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
         vector<vector<int>> quads;
-        set<vector<int>> st;
         for(int i=0; i<nums.size(); i++){
+            if (i > 0 && nums[i] == nums[i-1]) continue;
             int a = nums[i];
             for(int j=i+1; j<nums.size(); j++){
+                if (j > i+1 && nums[j] == nums[j-1]) continue;
                 int b = nums[j];
                 int l = j+1, r = nums.size()-1;
                 while (l < r){
                     int c = nums[l], d = nums[r];
-                    long long sum = (long long)a + (long long)b + (long long)c + (long long)d;
+                    ll sum = (ll)a + (ll)b + (ll)c + (ll)d;
                     
                     if (sum == target){
-                        st.insert({a, b, c, d});
+                        quads.push_back({a, b, c, d});
                         l++;
                         r--;
+
+                        while(l < r && nums[l] == nums[l-1]) l++;
+                        while(l < r && nums[r] == nums[r+1]) r--;
                     } else if (sum > target){
                         r--;
                     } else {
@@ -24,9 +29,6 @@ public:
                     }
                 }
             }
-        }
-        for(auto &it:st){
-            quads.push_back(it);
         }
         return quads;
     }

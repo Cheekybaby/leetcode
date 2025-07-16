@@ -1,38 +1,37 @@
 class Solution {
-public:
-    int maximumfreq(vector<int> &v){
-        int maxi = INT_MIN;
-        for (int i=0; i<26; i+=1){
-            maxi = max(maxi, v[i]);
+private:
+    int maxFrequency(vector<int> &freq){
+        int maxi = 0;
+        for(auto &f:freq){
+            maxi = max(maxi, f);
         }
-
         return maxi;
     }
+public:
     int characterReplacement(string s, int k) {
+        vector<int> freq(26, 0);
         int i=0, j=0;
-        vector<int> v(26,0);
-        int ans = 0;
-        while (j<s.length()){
-            v[s[j]-'A']+=1;
-            int maxfreq = maximumfreq(v);
-            int winlen = j-i+1;
-            if (winlen - maxfreq <= k){
-                ans = max(ans, winlen);
+        int maxlen = 0;
+        while(j < s.length()){
+            freq[s[j] - 'A']+=1;
+            int max_freq = maxFrequency(freq);
+            int winlen = j - i + 1;
+            if (winlen - max_freq <= k){
+                maxlen = max(maxlen, winlen);
             } else {
-                while (winlen-maxfreq > k){
-                    v[s[i]-'A']-=1;
+                while(winlen - max_freq > k){
+                    freq[s[i]-'A']-=1;
                     i+=1;
-                    maxfreq = maximumfreq(v);
-                    winlen = j-i+1;
+                    winlen = j - i + 1;
+                    max_freq = maxFrequency(freq);
                 }
 
-                if (winlen-maxfreq <= k){
-                    ans = max(ans, winlen);
+                if (winlen - max_freq <= k){
+                    maxlen = max(maxlen, winlen);
                 }
             }
             j+=1;
         }
-
-        return ans;
+        return maxlen;
     }
 };

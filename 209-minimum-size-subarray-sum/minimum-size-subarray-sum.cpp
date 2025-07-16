@@ -6,16 +6,11 @@ public:
         int sum = 0;
         while (j < nums.size()){
             sum += nums[j];
-            if (sum == target){
-                minlen = min(minlen, j-i+1);
-            } else if (sum > target){
-                while(i <= j && sum > target){
+            if (sum >= target){
+                while(i <= j && sum >= target){
                     minlen = min(minlen, j-i+1);
                     sum-=nums[i];
                     i++;
-                }
-                if (sum == target){
-                    minlen = min(minlen, j-i+1);
                 }
             }
             j++;

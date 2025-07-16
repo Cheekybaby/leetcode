@@ -1,25 +1,18 @@
 class Solution {
+private:
+    void arrayReverse(vector<int> &nums, int l, int r){
+        while (l < r){
+            swap(nums[l], nums[r]);
+            l++; r--;
+        }
+    }
 public:
     void rotate(vector<int>& nums, int k) {
-        k%=nums.size();
-        int i=0, j=nums.size()-1;
-        while (i<=j){
-            swap(nums[i], nums[j]);
-            i+=1;
-            j-=1;
-        }
+        int n = nums.size();
+        k %= n;
 
-        i=0, j=k-1;
-        while (i<=j){
-            swap(nums[i], nums[j]);
-            i+=1;
-            j-=1;
-        }
-        i=k, j=nums.size()-1;
-        while (i<=j){
-            swap(nums[i], nums[j]);
-            i+=1;
-            j-=1;
-        }
+        arrayReverse(nums, 0, n-1);
+        arrayReverse(nums, 0, k-1);
+        arrayReverse(nums, k, n-1);
     }
 };

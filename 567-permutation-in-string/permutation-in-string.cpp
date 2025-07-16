@@ -1,32 +1,30 @@
 class Solution {
-public:
-    bool permutation(vector<int> &v){
-        for (auto it:v){
-            if (it!=0) return false;
+private:
+    bool isValid(vector<int> &temp){
+        for(auto &t:temp){
+            if (t != 0) return false; 
         }
-
         return true;
     }
+public:
     bool checkInclusion(string s1, string s2) {
-        if (s1.length() > s2.length()) return false;
-        vector<int> mapp(26, 0);
-        for (int i=0; i<s1.length(); i+=1){
-            mapp[s1[i]-'a']+=1;
+        vector<int> str(26, 0);
+        for(int i=0; i<s1.length(); i++){
+            str[s1[i]-'a']++;
         }
 
-        int i=0, j=0;
-        while (j<s2.length()){
-            mapp[s2[j]-'a']-=1;
-            if (j-i+1 == s1.length()){
-                if (permutation(mapp)){
-                    return true;
+        for(int i=0; i<s2.length(); i++){
+            int ch = s2[i] - 'a';
+            if (str[ch] != 0){
+                int j = i;
+                vector<int> temp_freq = str;
+                while (j < s2.length() && (temp_freq[s2[j] - 'a'] > 0)){
+                    temp_freq[s2[j]-'a']--;
+                    j+=1;
                 }
-                mapp[s2[i]-'a']+=1;
-                i+=1;
+                if (isValid(temp_freq)) return true;
             }
-            j+=1;
         }
-
         return false;
     }
 };

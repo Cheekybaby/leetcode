@@ -1,17 +1,4 @@
 class Solution {
-private:
-    int getNumber(string &s){
-        bool neg = false;
-        
-        if (s[0] == '-'){
-            neg = true;
-            s = s.substr(1);
-        }
-        
-        int n = stoi(s);
-        
-        return (neg) ? -1*n : n;
-    }
 public:
     int calPoints(vector<string>& ops) {
         stack<int> st;
@@ -28,8 +15,7 @@ public:
             } else if (it == "C"){
                 st.pop();
             } else {
-                int num = getNumber(it);
-                cout << num << endl;
+                int num = stoi(it);
                 st.push(num);
             }
         }

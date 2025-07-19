@@ -1,34 +1,28 @@
 class Solution {
 public:
-    long long maxelement(vector<int> &v){
-        long long maxele = v[0];
-        for (int i=1; i<v.size(); i+=1){
-            maxele = max(maxele,(long long)v[i]);
-        }
-
-        return maxele;
-    }
-
-    long long timetoeat(vector<int> &v, long long k){
-        long long time = 0;
-        for (int i=0; i<v.size(); i+=1){
-            time+=(ceil(static_cast<double>(v[i])/k));
-        }
-
-        return time;
-    }
-
     int minEatingSpeed(vector<int>& piles, int h) {
-        int left = 1, right = maxelement(piles);
-        int ans;
-        while (left <= right){
-            int mid = left + (right - left) / 2;
-            if (timetoeat(piles, mid) <= h){
-                ans = mid;
-                right = mid - 1;
-            } else left = mid + 1;
+        int l=1, r = 0;
+        for(int i=0; i<piles.size(); i++){
+            r = max(r, piles[i]);
         }
 
-        return ans;
+        int min_speed = r;
+
+        while (l <= r){
+            int mid = l + (r - l)/2;
+            long long hours = 0;
+            for(int i=0; i<piles.size(); i++){
+                hours += ceil((double)piles[i]/mid);
+            }
+
+            if (hours <= h){
+                min_speed = min(min_speed, mid);
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return min_speed;
     }
 };

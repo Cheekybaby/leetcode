@@ -9,15 +9,15 @@
  * };
  */
 class Solution {
-public:
-    ListNode* reverse(ListNode *head){
+private:
+    ListNode* reverseLL(ListNode *head){
+        ListNode *temp = head;
         ListNode *prev = nullptr;
-        ListNode *curr = head;
-        while (curr){
-            ListNode *temp = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = temp;
+        while (temp){
+            ListNode *next_node = temp->next;
+            temp->next = prev;
+            prev = temp;
+            temp = next_node;
         }
 
         return prev;
@@ -37,23 +37,21 @@ public:
             list2 = q;
         }
     }
+public:
     void reorderList(ListNode* head) {
-        // Break into two halves from between
-        // Reverse the next half
-        // Rearrange to create a new Linked List
-        if (head->next == nullptr){
-            return ;
-        }
-        ListNode *slow = head, *fast = head, *prev = nullptr;
-        while (fast != nullptr && fast->next!=nullptr){
+        if (head->next == nullptr) return ;
+        ListNode *slow = head;
+        ListNode *fast = head;
+        ListNode *prev = nullptr;
+        while(fast && fast->next){
             prev = slow;
             slow = slow->next;
             fast = fast->next->next;
         }
+        
         prev->next = nullptr;
         ListNode *list1 = head;
-        ListNode *list2 = reverse(slow);
-        
+        ListNode *list2 = reverseLL(slow);
         merge(list1, list2);
     }
 };

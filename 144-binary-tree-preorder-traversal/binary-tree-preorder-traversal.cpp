@@ -11,17 +11,22 @@
  */
 class Solution {
 public:
-    // Recursive Approach
-    void traversal(TreeNode *root, vector<int> &v){
-        if (root == nullptr) return ;
-
-        v.push_back(root->val);
-        traversal(root->left, v);
-        traversal(root->right, v);
-    }
     vector<int> preorderTraversal(TreeNode* root) {
-        vector<int> ans;
-        traversal(root, ans);
-        return ans;
+        stack<TreeNode*> nodes;
+        vector<int> traversal_path;
+        if(root == nullptr) return traversal_path;
+        TreeNode *curr = root;
+        nodes.push(curr);
+        while(!nodes.empty()){
+            TreeNode *temp = nodes.top();
+            nodes.pop();
+
+            traversal_path.push_back(temp->val);
+
+            if (temp->right) nodes.push(temp->right);
+            if (temp->left) nodes.push(temp->left);
+        }
+
+        return traversal_path;
     }
 };

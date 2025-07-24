@@ -1,27 +1,29 @@
 class Solution {
 public:
-    bool solve(vector<int> &nums, int target, int index, int curr_sum, vector<vector<int>> &memo){
-        if (index == nums.size()) return 0;
-        if (curr_sum == target) return 1;
-        if (curr_sum > target) return 0;
-        if (memo[index][curr_sum] != -1) return memo[index][curr_sum];
-
-        bool take = solve(nums, target, index + 1, curr_sum + nums[index], memo);
-        bool not_take = solve(nums, target, index + 1, curr_sum, memo);
-
-        memo[index][curr_sum] = (take || not_take);
-        return memo[index][curr_sum];
-    }
     bool canPartition(vector<int>& nums) {
-        int sum = 0;
-        for (auto x:nums){
-            sum+=x;
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if (sum & 1) return false;
+
+        int target = sum/2;
+        int n = nums.size();
+        vector<vector<bool>> dp(n+1, vector<bool> (target+1));
+        for(int i=0; i<=n; i++){
+            dp[i][0] = true;
+        }
+        for(int i=1; i<=target; i++){
+            dp[0][i] = false;
         }
 
-        if (sum % 2 == 1){
-            return false;
+
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=target; j++){
+                if (j >= nums[i-1]){
+                    dp[i][j] = dp[i-1][j] || dp[i-1][j-nums[i-1]];
+                } else {
+                    dp[i][j] = dp[i-1][j];
+                }
+            }
         }
-        vector<vector<int>> memo (nums.size(), vector<int> (20005, -1));
-        return solve(nums, sum/2, 0, 0, memo);
+        return dp[n][target];
     }
 };

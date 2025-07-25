@@ -1,19 +1,30 @@
 class Solution {
+private:
+    int OFFSET = 1000;
+    int dp[22][2004];
 public:
-    int solve(vector<int> &nums, int target, int index, int ans, vector<vector<int>> &memo, int offset){
-        if (index == nums.size()) {
-            return ans == target ? 1 : 0;
+    Solution(){
+        memset(dp, -1, sizeof(dp));
+    }
+    int solve(vector<int> &nums, int target, int n, int sum){
+        if (n < 0){
+            if (sum == target) return 1;
+            return 0;
         }
-        if (memo[index][ans+offset] != -1) return memo[index][ans+offset];
-        int add = solve(nums, target, index + 1, ans + nums[index], memo, offset);
-        int sub = solve(nums, target, index + 1, ans - nums[index], memo, offset);
+        
+        if (dp[n][OFFSET+sum] != -1) return dp[n][OFFSET+sum];
 
-        memo[index][ans + offset] = add + sub;
-        return memo[index][ans+offset];
+        int add = solve(nums, target, n-1, sum + nums[n]);
+        int sub = solve(nums, target, n-1, sum - nums[n]);
+
+        dp[n][OFFSET+sum] = add + sub;
+        
+        return dp[n][OFFSET+sum];
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        vector<vector<int>> memo(nums.size(), vector<int> (2*sum + 1, -1));
-        return solve(nums, target, 0, 0, memo, sum);
+        int sum = 0;
+        int n = nums.size()-1;
+        int cnt = solve(nums, target, n, sum);
+        return cnt;
     }
 };

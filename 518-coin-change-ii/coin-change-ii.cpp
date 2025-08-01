@@ -1,21 +1,23 @@
 class Solution {
 public:
-    int solve(int amount, vector<int> &coins, int index, vector<vector<int>> &memo){
-        if (amount == 0) return 1;
+    int solve(vector<int>& coins, int amount, int n, vector<vector<int>> &dp) {
         if (amount < 0) return 0;
-        if (index == coins.size()) return 0;
-        if (memo[index][amount] != -1) return memo[index][amount];
+        if (amount == 0) return 1;
+        if (n < 0) return 0;
+        if (dp[n][amount] != -1) return dp[n][amount];
 
-        int not_take = solve(amount, coins, index + 1, memo);
+        int not_take = solve(coins, amount, n-1,  dp);
         int take = 0;
-        if (coins[index] <= amount){
-            take = solve(amount - coins[index], coins, index, memo);
+        if (amount >= coins[n]){
+            take = solve(coins, amount-coins[n], n, dp);
         }
 
-        return memo[index][amount] = take + not_take;
+        return dp[n][amount] = take + not_take;
     }
     int change(int amount, vector<int>& coins) {
-        vector<vector<int>> memo(coins.size(), vector<int> (amount + 1, -1));
-        return solve(amount, coins, 0, memo);
+        int n = coins.size();
+        vector<vector<int>> dp(n+1, vector<int> (amount+1, -1));
+        int ans = solve(coins, amount, n-1, dp);
+        return ans;
     }
 };

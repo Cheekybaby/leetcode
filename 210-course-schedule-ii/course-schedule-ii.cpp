@@ -5,55 +5,44 @@
 */
 class Solution {
 public:
-    void reverse(vector<int> &r){
-        int i=0, j=r.size()-1;
-        while (i < j){
-            swap(r[i], r[j]);
-            i++; j--;
+    bool dfs(unordered_map<int,vector<int>> &adj, vector<bool> &visited, vector<bool> &inRecursion, int u, stack<int> &st){
+        visited[u] = true;
+        inRecursion[u] = true;
+        for(auto &v:adj[u]){
+            if (visited[v] == false && dfs(adj, visited, inRecursion, v, st)){
+                return true;
+            } else if (inRecursion[v] == true) return true;
         }
+        inRecursion[u] = false;
+        st.push(u);
+        return false;
     }
     vector<int> findOrder(int numCourses, vector<vector<int>>& pre) {
-        vector<int> indegree(numCourses, 0);
         vector<bool> visited(numCourses, false);
-
+        vector<bool> inRecursion(numCourses, false);
+        stack<int> st;
         unordered_map<int,vector<int>> adj;
         for(int i=0; i<pre.size(); i++){
-            int u = pre[i][0];
-            int v = pre[i][1];
+            int u = pre[i][1];
+            int v = pre[i][0];
 
             adj[u].push_back(v);
         }
 
         for(int i=0; i<numCourses; i++){
-            for (auto &v:adj[i]){
-                indegree[v]++;
+            if (visited[i] == false){
+                bool flag = dfs(adj, visited, inRecursion, i, st);
+
+                if (flag == true) return {};
             }
         }
 
-        queue<int> q;
-        for(int i=0; i<numCourses; i++){
-            if (indegree[i] == 0) q.push(i);
-        }
         vector<int> sorted;
-        int cnt = 0;
-        while(!q.empty()){
-            int u = q.front();
-            cnt++;
-            sorted.push_back(u);
-            q.pop();
-
-            for(auto &v:adj[u]){
-                if (visited[v] == false){
-                    indegree[v]--;
-                    if (indegree[v] == 0) q.push(v);
-                }
-            }
+        while(!st.empty()){
+            sorted.push_back(st.top());
+            st.pop();
         }
 
-        if (cnt == numCourses){
-            reverse(sorted);
-            return sorted;
-        }
-        return {};
+        return sorted;
     }
 };

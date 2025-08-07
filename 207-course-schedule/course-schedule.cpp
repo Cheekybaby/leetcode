@@ -1,17 +1,9 @@
-// Check if there is a cycle or not. If there is a cycle then we can't take all the courses
+/* Check if there is a cycle or not. If there is a cycle then we can't take all the courses
+For DFS simply check for the cycle using recursion
+For BFS cycle detection, use Kahn's algorithm to generate the topological sorting, if the sorting exists then there is no cycle.
+*/
 class Solution {
 public:
-    bool dfs(unordered_map<int,vector<int>> &adj, vector<bool> &visited, int u, vector<bool> &inRecursion){
-        visited[u] = true;
-        inRecursion[u] = true;
-        for(auto &v:adj[u]){
-            if (visited[v] == false){
-                if (dfs(adj, visited, v, inRecursion)) return true;
-            } else if (inRecursion[v] == true) return true;
-        }
-        inRecursion[u] = false;
-        return false;
-    }
     bool canFinish(int numCourses, vector<vector<int>>& pre) {
         unordered_map<int,vector<int>> adj;
 
@@ -23,12 +15,32 @@ public:
         }
 
         vector<bool> visited(numCourses, false);
-        vector<bool> inRecursion(numCourses, false);
+        vector<int> indegree(numCourses, 0);
+
         for(int i=0; i<numCourses; i++){
-            if (visited[i] == false && dfs(adj, visited, i, inRecursion)){
-                return false;
+            for(auto &v:adj[i]){
+                indegree[v]++;
             }
         }
-        return true;
+
+        queue<int> q;
+        for(int i=0; i<numCourses; i++){
+            if (indegree[i] == 0) q.push(i);
+        }
+        int cnt = 0;
+        while(!q.empty()){
+            int u = q.front();
+            cnt+=1;
+            q.pop();
+
+            for(auto &v:adj[u]){
+                indegree[v]--;
+
+                if (indegree[v] == 0) q.push(v);
+            }
+        }
+
+        if (cnt == numCourses) return true;
+        return false;
     }
 };

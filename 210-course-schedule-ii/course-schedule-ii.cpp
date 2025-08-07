@@ -1,35 +1,58 @@
+/* Topological Sort baby
+    For BFS, use Kahn's algorithm to create the topological sorted order
+    For DFS, use a stack to store the topological sorted order
+
+*/
 class Solution {
 public:
-    vector<int> findOrder(int n, vector<vector<int>>& prerequisites) {
-        vector<int> ans;
-        vector<vector<int>> adj(n);
-        vector<int> inDegree(n, 0);
+    void reverse(vector<int> &r){
+        int i=0, j=r.size()-1;
+        while (i < j){
+            swap(r[i], r[j]);
+            i++; j--;
+        }
+    }
+    vector<int> findOrder(int numCourses, vector<vector<int>>& pre) {
+        vector<int> indegree(numCourses, 0);
+        vector<bool> visited(numCourses, false);
 
-        for(auto &it:prerequisites){
-            adj[it[1]].push_back(it[0]);
-            inDegree[it[0]]++;
+        unordered_map<int,vector<int>> adj;
+        for(int i=0; i<pre.size(); i++){
+            int u = pre[i][0];
+            int v = pre[i][1];
+
+            adj[u].push_back(v);
         }
 
-        queue<int> q;
-        for(int i=0; i<n; i++){
-            if (inDegree[i] == 0){
-                q.push(i);
+        for(int i=0; i<numCourses; i++){
+            for (auto &v:adj[i]){
+                indegree[v]++;
             }
         }
 
+        queue<int> q;
+        for(int i=0; i<numCourses; i++){
+            if (indegree[i] == 0) q.push(i);
+        }
+        vector<int> sorted;
+        int cnt = 0;
         while(!q.empty()){
-            int curr = q.front();
+            int u = q.front();
+            cnt++;
+            sorted.push_back(u);
             q.pop();
-            ans.push_back(curr);
-            for(auto &x:adj[curr]){
-                if(--inDegree[x] == 0){
-                    q.push(x);
+
+            for(auto &v:adj[u]){
+                if (visited[v] == false){
+                    indegree[v]--;
+                    if (indegree[v] == 0) q.push(v);
                 }
             }
         }
 
-        if(n == ans.size()){
-            return ans;
+        if (cnt == numCourses){
+            reverse(sorted);
+            return sorted;
         }
         return {};
     }

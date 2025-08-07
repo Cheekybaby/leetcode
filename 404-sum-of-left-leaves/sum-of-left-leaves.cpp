@@ -12,29 +12,27 @@
 class Solution {
 public:
     int sumOfLeftLeaves(TreeNode* root) {
-        if (root == nullptr){
-            return 0;
-        }
-
-        queue<pair<TreeNode*, bool>> q;
-        q.push({root, false});
         int sum = 0;
-        while (!q.empty()){
-            TreeNode *node = q.front().first;
-            bool isLeft = q.front().second;
-            q.pop();
+        if (root == nullptr) return sum;
 
-            if (isLeft && !node->left && !node->right){
-                sum+=node->val;
-            }
+        queue<TreeNode*> q;
+        q.push(root);
 
-            if (node->left){
-                q.push({node->left, true});
-            }
-            if (node->right){
-                q.push({node->right, false});
+        while(!q.empty()){
+            int n = q.size();
+            for(int i=0; i<n; i++){
+                TreeNode *node = q.front();
+                q.pop();
+
+                if (node->left && (!node->left->left && !node->left->right)){
+                    sum += node->left->val;
+                }
+
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
         }
+
         return sum;
     }
 };

@@ -13,12 +13,55 @@
 class Solution {
 public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
-        if (p == nullptr && q == nullptr)
-            return true;
-        if (p == nullptr || q == nullptr)
-            return false;
+        queue<TreeNode*> qq, pq;
 
-        return (p->val == q->val && isSameTree(p->left, q->left) &&
-                isSameTree(p->right, q->right));
+        qq.push(q);
+        pq.push(p);
+
+        while (!qq.empty() && !pq.empty()) {
+            int n = pq.size(), m = qq.size();
+
+            if (n != m)
+                return false;
+
+            for (int i = 0; i < n; i++) {
+                TreeNode* pi = pq.front();
+                pq.pop();
+
+                TreeNode* qi = qq.front();
+                qq.pop();
+
+                // See if the nodes are same
+                if (pi && qi) {
+                    if (pi->val != qi->val)
+                        return false;
+
+                    if (pi->left && qi->left) { // Check the left child
+                        if (pi->left->val != qi->left->val)
+                            return false;
+                    } else if (pi->left || qi->left)
+                        return false;
+
+                    if (pi->right && qi->right) { // check the right child
+                        if (pi->right->val != qi->right->val)
+                            return false;
+                    } else if (pi->right || qi->right)
+                        return false;
+
+                    if (pi->left)
+                        pq.push(pi->left);
+                    if (qi->left)
+                        qq.push(qi->left);
+
+                    if (pi->right)
+                        pq.push(pi->right);
+                    if (qi->right)
+                        qq.push(qi->right);
+                } else if (pi || qi)
+                    return false;
+            }
+        }
+
+        return true;
     }
 };

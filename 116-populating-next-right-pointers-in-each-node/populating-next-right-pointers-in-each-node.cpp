@@ -26,23 +26,18 @@ public:
 
         while(!q.empty()){
             int n = q.size();
-            vector<Node*> nodes(n);
-            for(int i=0; i<n; i++){
-                Node* node = q.front();
+            while(n--){
+                Node *node = q.front();
                 q.pop();
 
-                nodes[i] = node;
+                if (n == 0){
+                    node->next = NULL;
+                } else {
+                    node->next = q.front();
+                }
 
                 if (node->left) q.push(node->left);
                 if (node->right) q.push(node->right);
-            }
-
-            for(int i=n-1; i>=0; i--){
-                if (i == n-1){
-                    nodes[i]->next = NULL;
-                    continue;
-                }
-                nodes[i]->next = nodes[i+1];
             }
         }
 

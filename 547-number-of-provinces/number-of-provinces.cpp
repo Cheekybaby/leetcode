@@ -1,11 +1,19 @@
 class Solution {
 public:
-    void dfs(unordered_map<int,vector<int>> &adj, vector<bool> &visited, int u){
+    void bfs(unordered_map<int,vector<int>> &adj, vector<bool> &visited, int u){
+        queue<int> q;
+        q.push(u);
         visited[u] = true;
 
-        for(auto &v:adj[u]){
-            if (visited[v] == false){
-                dfs(adj, visited, v);
+        while(!q.empty()){
+            int u = q.front();
+            q.pop();
+
+            for(auto &v:adj[u]){
+                if (visited[v] == false){
+                    q.push(v);
+                    visited[v] = true;
+                }
             }
         }
     }
@@ -26,11 +34,11 @@ public:
 
         vector<bool> visited(n, false);
 
-        // we do dfs on all the nodes
+        // we do bfs on all the nodes
         int cnt = 0;
         for(int i=0; i<n; i++){
             if (visited[i] == false){
-                dfs(adj, visited, i);
+                bfs(adj, visited, i);
                 cnt++;
             }
         }

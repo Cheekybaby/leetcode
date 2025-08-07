@@ -10,38 +10,39 @@
  * };
  */
 class Solution {
+private:
+    void reverse(vector<vector<int>> &t){
+        int i=0, j=t.size()-1;
+        while(i < j){
+            swap(t[i], t[j]);
+            i++; j--;
+        }
+    }
 public:
     vector<vector<int>> levelOrderBottom(TreeNode* root) {
-        vector<vector<int>> ans;
-        if (root == nullptr) return ans;
+        vector<vector<int>> traversal;
+        if (root == nullptr) return traversal;
 
         queue<TreeNode*> q;
         q.push(root);
 
         while(!q.empty()){
             int n = q.size();
-            vector<int> level;
+            vector<int> level(n);
             for(int i=0; i<n; i++){
-                TreeNode *curr = q.front();
+                TreeNode *node = q.front();
                 q.pop();
-                level.push_back(curr->val);
 
-                if (curr->left) q.push(curr->left);
-                if (curr->right) q.push(curr->right);
+                level[i] = node->val;
+
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
             }
-            ans.push_back(level);
+            traversal.push_back(level);
         }
-        reverse(ans);
-        return ans;
-    }
 
-private:
-    void reverse(vector<vector<int>> &ans){
-        int i=0, j = ans.size()-1;
-        while(i<j){
-            swap(ans[i], ans[j]);
-            i++;
-            j--;
-        }
+        reverse(traversal);
+
+        return traversal;
     }
 };

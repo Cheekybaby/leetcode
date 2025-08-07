@@ -26,11 +26,11 @@ public:
 
         while(!q.empty()){
             int n = q.size();
-            while(n--){
-                Node *node = q.front();
+            for(int i=0; i<n; i++){
+                Node* node = q.front();
                 q.pop();
 
-                if (n == 0){
+                if (i == n-1){
                     node->next = NULL;
                 } else {
                     node->next = q.front();

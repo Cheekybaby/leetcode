@@ -1,13 +1,20 @@
 class Solution {
 private:
-    bool dfs(vector<vector<int>> &graph, vector<int> &color, int curr, int c){
+    bool bfs(vector<vector<int>> &graph, vector<int> &color, int curr, int c){
         color[curr] = c;
+        queue<int> q;
+        q.push(curr);
 
-        for(auto &v:graph[curr]){
-            if (color[v] == color[curr]) return false;
-            else if (color[v] == -1){
-                int c_v = 1 - c;
-                if (dfs(graph, color, v, c_v) == false) return false;
+        while(!q.empty()){
+            int u = q.front();
+            q.pop();
+
+            for(auto &v:graph[u]){
+                if (color[v] == color[u]) return false;
+                else if (color[v] == -1){
+                    color[v] = 1 - color[u];
+                    q.push(v);
+                }
             }
         }
         return true;
@@ -19,7 +26,7 @@ public:
 
         for(int i=0; i<n; i++){
             if (color[i] == -1){
-                if (dfs(graph, color, i, 1) == false) return false;
+                if (bfs(graph, color, i, 1) == false) return false;
             }
         }
 

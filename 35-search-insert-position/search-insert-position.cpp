@@ -1,18 +1,14 @@
 class Solution {
-private:
-    int lowerBound(vector<int> &v, int target){
-        int i = 0, j = v.size()-1;
-        while(i <= j){
-            int mid = i + (j - i)/2;
-            if (v[mid] == target) return mid;
-            else if (v[mid] > target) j = mid-1;
-            else i = mid + 1;
-        }
-
-        return i;
-    }
 public:
     int searchInsert(vector<int>& nums, int target) {
-        return lowerBound(nums, target);
+        int l = 0, r = nums.size()-1;
+        while (l <= r){
+            int mid = midpoint(l,r);
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) r = mid - 1;
+            else l = mid + 1;
+        }
+
+        return l;
     }
 };

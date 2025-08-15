@@ -11,13 +11,16 @@ class Solution {
 public:
     int guessNumber(int n) {
         int i = 0, j = n;
-        while(i <= j){
-            int mid = i +  (j - i) / 2;
-            int guessed = guess(mid);
-            if (guessed == -1) j = mid-1;
-            else if (guessed == 1) i = mid + 1;
+        while (i <= j){
+            int mid = midpoint(i, j);
+            
+            int prediction = guess(mid);
+
+            if (prediction == -1) j = mid - 1;
+            else if (prediction == 1) i = mid + 1;
             else return mid;
         }
+
         return -1;
     }
 };

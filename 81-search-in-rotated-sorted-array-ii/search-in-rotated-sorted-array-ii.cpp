@@ -1,29 +1,21 @@
 class Solution {
 public:
     bool search(vector<int>& nums, int target) {
-        int l = 0, r = nums.size()-1;
-        while (l <= r){
-            int mid = l + (r-l)/2;
+        int i = 0, j = nums.size()-1;
+        while(i <= j){
+            int mid = midpoint(i,j);
             if (nums[mid] == target) return true;
-            
-            if (nums[mid] == nums[l] && nums[mid] == nums[r]){
-                l++;
-                r--;
+
+            if (nums[i] == nums[mid] && nums[j] == nums[mid]) {
+                i++; j--;
                 continue;
             }
-
-            if (nums[mid] >= nums[l]){
-                if (target >= nums[l] && target <= nums[mid]){
-                    r = mid - 1;
-                } else {
-                    l = mid + 1;
-                }
+            if (nums[mid] >= nums[i]){
+                if (nums[mid] > target && nums[i] <= target) j = mid - 1;
+                else i = mid + 1;
             } else {
-                if (target <= nums[r] && target >= nums[mid]){
-                    l = mid + 1;
-                } else {
-                    r = mid - 1;
-                }
+                if (target > nums[mid] && target <= nums[j]) i = mid + 1;
+                else j = mid - 1;
             }
         }
 

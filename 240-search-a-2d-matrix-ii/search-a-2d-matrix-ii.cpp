@@ -1,8 +1,14 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        for(int i=0; i<matrix.size(); i++){
-            if (binary_search(matrix[i].begin(), matrix[i].end(), target)) return true;
+        int m = matrix.size(); 
+        int n = matrix[0].size();
+
+        int i = 0, j = n-1;
+        while (i < m && j >= 0){
+            if (matrix[i][j] == target) return true;
+            else if (matrix[i][j] < target) i++;
+            else j--;
         }
 
         return false;

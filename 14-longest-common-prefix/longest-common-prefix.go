@@ -9,12 +9,11 @@ func longestCommonPrefix(strs []string) string {
 }
 
 func newPrefix(s, p string) string {
-    var pref string
-    for i:=0; i < len(s) && i < len(p); i++ {
+    var i int
+    for i = 0; i < len(s) && i < len(p); i++ {
         if s[i] != p[i] {
             break
         }
-        pref += string(s[i])
     }
-    return pref
+    return s[:i]
 }

@@ -9,7 +9,7 @@ func isValid(s string) bool {
     for i := range s {
         bracket := s[i]
 
-        if bracket == '(' || bracket == '{' || bracket == '[' {
+        if _, ok := pair[bracket]; ok {
             stack = append(stack, bracket) // Push into the stack
         } else {
             if len(stack) == 0 { // Check if the stack is empty

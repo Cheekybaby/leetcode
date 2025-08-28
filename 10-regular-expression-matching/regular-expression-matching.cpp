@@ -1,32 +1,27 @@
 class Solution {
+private:
+    vector<vector<int>> memo;
+
+    bool solve(string& s, string& p, int i, int j) {
+        if (j == p.length())
+            return i == s.length();
+        if (memo[i][j] != -1)
+            return memo[i][j];
+
+        bool firstMatch = (i < s.length() && (s[i] == p[j] || p[j] == '.'));
+
+        if (j + 1 < p.length() && p[j + 1] == '*') {
+            memo[i][j] = (solve(s, p, i, j + 2) ||
+                          (firstMatch && solve(s, p, i + 1, j)));
+        } else {
+            memo[i][j] = (firstMatch && solve(s, p, i + 1, j + 1));
+        }
+        return memo[i][j];
+    }
+
 public:
     bool isMatch(string s, string p) {
-        int m = s.length(), n = p.length();
-        
-        vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
-        
-        dp[0][0] = true;
-        
-        for (int j = 1; j <= n; ++j) {
-            if (p[j - 1] == '*' && dp[0][j - 2]) {
-                dp[0][j] = true;
-            }
-        }
-        
-        for (int i = 1; i <= m; ++i) {
-            for (int j = 1; j <= n; ++j) {
-                if (p[j - 1] == s[i - 1] || p[j - 1] == '.') {
-                    dp[i][j] = dp[i - 1][j - 1];
-                } 
-                else if (p[j - 1] == '*') {
-                    dp[i][j] = dp[i][j - 2];
-                    
-                    if (p[j - 2] == s[i - 1] || p[j - 2] == '.') {
-                        dp[i][j] = dp[i][j] || dp[i - 1][j];
-                    }
-                }
-            }
-        }
-        return dp[m][n];
+        memo.assign(s.size() + 1, vector<int>(p.size() + 1, -1));
+        return solve(s, p, 0, 0);
     }
 };

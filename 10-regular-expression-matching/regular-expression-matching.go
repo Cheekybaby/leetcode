@@ -7,7 +7,7 @@ func solve(s, p string, i, j int, dp [][]int) bool {
         return dp[i][j] == 1
     }
 
-    firstMatch := (i < len(s)) && (s[i] == p[j] || p[j] == '.')
+    firstMatch := (i < len(s)) && (s[i] == p[j] || p[j] ==  '.')
 
     if j < len(p)-1 && p[j+1] == '*' {
         dp[i][j] = 0
@@ -17,13 +17,14 @@ func solve(s, p string, i, j int, dp [][]int) bool {
         }
     } else {
         dp[i][j] = 0
-        val := (firstMatch && solve(s, p, i+1, j+1, dp))
+        val := firstMatch && solve(s, p, i+1, j+1, dp)
         if val {
             dp[i][j] = 1
         }
     }
     return dp[i][j] == 1
 }
+
 func isMatch(s string, p string) bool {
     dp := initializeDP(len(s), len(p))
     return solve(s, p, 0, 0, dp)

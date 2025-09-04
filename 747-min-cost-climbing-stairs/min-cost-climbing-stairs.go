@@ -1,12 +1,14 @@
 func minCostClimbingStairs(cost []int) int {
-    dp := make([]int, len(cost))
+    var first, second int
 
-    dp[0] = cost[0]
-    dp[1] = cost[1]
+    first = cost[0]
+    second = cost[1]
 
     for i := 2; i < len(cost); i++ {
-        dp[i] = cost[i] + min(dp[i-1], dp[i-2])
+        curr := cost[i] + min(first, second)
+        first = second
+        second = curr
     }
 
-    return min(dp[len(cost)-1], dp[len(cost)-2])
+    return min(first, second)
 }

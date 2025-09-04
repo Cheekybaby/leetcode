@@ -1,13 +1,13 @@
 func maxSubArray(nums []int) int {
-    maxSum, currSum := math.MinInt, 0
-    for i := range nums {
-        currSum = max(currSum + nums[i], nums[i])
+    max_sum := math.MinInt
+    sum := 0
+    for i := 0; i < len(nums); i++ {
+        sum = max(nums[i], sum + nums[i])
+        max_sum = max(max_sum, sum)
 
-        maxSum = max(currSum, maxSum)
-
-        if currSum < 0 {
-            currSum = 0
+        if sum < 0 {
+            sum = 0
         }
     }
-    return maxSum
+    return max_sum
 }

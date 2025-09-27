@@ -1,4 +1,5 @@
-func solve(n int, dp []int) int {
+var dp = make([]int, 32);
+func solve(n int) int {
     if n == 0 {
         return 0
     }
@@ -8,18 +9,16 @@ func solve(n int, dp []int) int {
     if dp[n] != -1 {
         return dp[n]
     }
-    dp[n] = solve(n-1, dp) + solve(n-2, dp)
+    dp[n] = solve(n-1) + solve(n-2)
     return dp[n]
 }
 func fib(n int) int {
-    dp := initDP(n)
-    return solve(n, dp)
+    initDP()
+    return solve(n)
 }
 
-func initDP(n int) (dp []int) {
-    dp = make([]int, n+1)
+func initDP() {
     for i := range dp {
         dp[i] = -1
     }
-    return dp
 }

@@ -1,5 +1,5 @@
 var dp = make([][]int, 22)
-const OFFSET = 10000
+const OFFSET = 1001
 func solve(nums []int, target, sum, idx int) int {
     if idx >= len(nums) {
         if target == sum {
@@ -26,7 +26,7 @@ func findTargetSumWays(nums []int, target int) int {
 
 func initDP() {
     for i := range dp {
-        dp[i] = make([]int, 20000)
+        dp[i] = make([]int, 2200)
         for j := range dp[i] {
             dp[i][j] = -1
         }

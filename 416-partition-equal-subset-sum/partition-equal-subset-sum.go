@@ -1,52 +1,46 @@
-func solve(nums []int, sum, idx int, dp [][]int) bool {
-    if sum == 0 {
+var dp = make([][]int, 202)
+func solve(nums []int, target, sum, idx int) bool {
+    if idx >= len(nums) {
+        return (sum == target)
+    }
+    if target == sum {
         return true
     }
-    if sum < 0 {
-        return false
-    }
-    if idx == len(nums) {
-        return false
-    }
+
     if dp[idx][sum] != -1 {
-        return dp[idx][sum] == 1
+        return (dp[idx][sum] == 1)
     }
 
-    take := solve(nums, sum-nums[idx], idx+1, dp)
-    not_take := solve(nums, sum, idx+1, dp)
+    take := solve(nums, target, sum + nums[idx], idx+1)
+    not_take := solve(nums, target, sum, idx+1)
 
-    if take || not_take {
+    if (take || not_take) {
         dp[idx][sum] = 1
     } else {
         dp[idx][sum] = 0
     }
 
-    return dp[idx][sum] == 1
+    return (dp[idx][sum] == 1)
 }
-
 func canPartition(nums []int) bool {
     sum := 0
-    for i := range nums {
-        sum += nums[i]
+    for _, val := range nums {
+        sum += val
     }
-
-    if sum & 1 == 1 {
+    
+    if (sum % 2) == 1 {
         return false
     }
 
-    sum /= 2
-    dp := initDP(int(len(nums)), sum)
-    // Now it's a subset sum problem
-    return solve(nums, sum, 0, dp)
+    target := sum/2
+    initDP()
+    return solve(nums, target, 0, 0)
 }
-
-func initDP(n, m int) (matrix [][]int) {
-    matrix = make([][]int, n+1)
-    for i := range matrix {
-        matrix[i] = make([]int, m+1)
-        for j := range matrix[i] {
-            matrix[i][j] = -1
+func initDP() {
+    for i := range dp {
+        dp[i] = make([]int, 20001)
+        for j := range dp[i] {
+            dp[i][j] = -1
         }
     }
-    return matrix
 }

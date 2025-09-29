@@ -1,5 +1,5 @@
 func solve(nums []int, visited []bool, k, idx, target, sum int) bool {
-    if k == 0 {
+    if k == 1 {
         return true
     }
     if sum == target {

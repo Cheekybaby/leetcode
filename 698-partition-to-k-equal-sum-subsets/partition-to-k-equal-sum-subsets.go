@@ -31,7 +31,6 @@ func canPartitionKSubsets(nums []int, k int) bool {
     sort.Sort(sort.Reverse((sort.IntSlice(nums))))
     target := (sum / k)
     visited := make([]bool, len(nums))
-    fmt.Println(visited)
     
     return solve(nums, visited, k, 0, target, 0)
 }

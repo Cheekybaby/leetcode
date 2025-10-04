@@ -1,20 +1,19 @@
 func maxSubarraySumCircular(nums []int) int {
-    globalMax, globalMin := nums[0], nums[0]
-    currMax, currMin := 0, 0
+    max_sum, min_sum := math.MinInt, math.MaxInt
+    curr_max, curr_min := 0, 0
     sum := 0
-
-    for i := range nums {
-        currMax = max(currMax + nums[i], nums[i])
-        currMin = min(currMin + nums[i], nums[i])
+    for i := 0; i<len(nums); i++ {
+        curr_max = max(curr_max + nums[i], nums[i])
+        curr_min = min(curr_min + nums[i], nums[i])
 
         sum += nums[i]
 
-        globalMax = max(globalMax, currMax)
-        globalMin = min(globalMin, currMin)
+        max_sum = max(max_sum, curr_max)
+        min_sum = min(min_sum, curr_min)
     }
 
-    if globalMax > 0 {
-        return max(globalMax, sum - globalMin)
+    if max_sum > 0 {
+        return max(max_sum, sum - min_sum)
     }
-    return globalMax
+    return max_sum
 }

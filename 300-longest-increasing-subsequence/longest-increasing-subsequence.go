@@ -1,58 +1,28 @@
-func solve(nums []int, last, idx, OFFSET int, dp[][]int) int {
-    if idx == len(nums) {
-        return 0
-    }
-
-    if dp[idx][OFFSET + last] != -1 {
-        return dp[idx][OFFSET + last]
-    }
-
-    take := 0
-
-    if last < nums[idx] {
-        curr := last
-        last = nums[idx]
-        take = 1 + solve(nums, last, idx+1, OFFSET, dp)
-        last = curr
-    }
-
-    not_take := solve(nums, last, idx+1, OFFSET, dp)
-
-    dp[idx][OFFSET + last] = max(take, not_take)
-
-    return dp[idx][OFFSET + last]
-}
-
 func lengthOfLIS(nums []int) int {
-    mini, maxi := math.MaxInt, math.MinInt
-    
+    var tails []int
+    tails = append(tails, nums[0])
     for _, val := range nums {
-        mini = min(mini, val)
-        maxi = max(maxi, val)
-    }
-
-    size := max(abs(maxi), abs(mini))
-    if size == 0 {
-        size = 2
-    }
-    dp := initDP(len(nums), 2 * size)
-
-    last := mini-1
-    return solve(nums, last, 0, 2 * size, dp)
-}
-func initDP(n, m int) (dp [][]int) {
-    dp = make([][]int, n+1)
-    for i := range dp {
-        dp[i] = make([]int, 2*m)
-        for j := range dp[i] {
-            dp[i][j] = -1
+        idx := binarySearch(tails, val)
+        if idx >= len(tails) {
+            tails = append(tails, val)
+        } else {
+            tails[idx] = val
         }
     }
-    return dp
+
+    return len(tails)
 }
-func abs(x int) int {
-    if x < 0 {
-        return -1 * x
+
+func binarySearch(nums []int, val int) int {
+    l, r := 0, len(nums)-1
+    for l <= r {
+        mid := l + (r - l)/2
+        if nums[mid] >= val {
+            r = mid - 1
+        } else {
+            l = mid + 1
+        }
     }
-    return x
+
+    return l
 }

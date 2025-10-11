@@ -2,28 +2,28 @@ func minPathSum(grid [][]int) int {
     m := len(grid)
     n := len(grid[0])
 
-    dp := make([][]int, m+1)
-    for i := range dp {
-        dp[i] = make([]int, n+1)
-    }
+    dp := make([]int, n)
     const val = 50000
-    for i := 0; i <= m; i++ {
-        dp[i][0] = val
-    }
-    for i := 0; i <= n; i++ {
-        dp[0][i] = val
-    }
-
-    dp[1][1] = grid[0][0]
-
-    for i := 1; i <= m; i++ {
-        for j := 1; j <= n; j++ {
-            if i == 1 && j == 1 {
-                continue
-            }
-            dp[i][j] = grid[i-1][j-1] + min(dp[i-1][j], dp[i][j-1])
+    for i := 0; i < n; i++ {
+        if i == 0 {
+            dp[i] = grid[0][i]
+            continue
         }
+        dp[i] = dp[i-1] + grid[0][i]
     }
 
-    return dp[m][n]
+    for i := 2; i <= m; i++ {
+        tmp := make([]int, n)
+        for j := 0; j < n; j++ {
+            up := dp[j]
+            left := val
+            if j > 0 {
+                left = tmp[j-1]
+            }
+            tmp[j] = grid[i-1][j] + min(left, up)
+        }
+        dp = tmp
+    }
+
+    return dp[n-1]
 }

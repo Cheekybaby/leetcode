@@ -1,65 +1,41 @@
 func longestPalindrome(s string) string {
-    if len(s) == 1 {
-        return s
+    n := len(s)
+    dp := make([][]bool, n)
+    for i := range dp {
+        dp[i] = make([]bool, n)
+        for j := range dp[i] {
+            dp[i][j] = false
+        }
+    }
+    max_len := 1
+    idx := 0
+    // Length 1
+    for i := range s {
+        dp[i][i] = true
     }
 
-    i:=0
-    j:=i+1
-    k:=i+2
-
-    pal := string(s[0])
-
-    for i<j && j<k && k<len(s)+1 {
-        // Check for length 2
-        if s[i] == s[j] {
-            new_pal := s[i:j+1]
-            if len(new_pal) > len(pal) {
-                pal = new_pal
-            }
-            // Check for length greater than 2
-            start := i-1
-            end := j+1
-            for start>=0 && end<len(s) {
-                if s[start] == s[end] {
-                    new_pal := s[start:end+1]
-                    if len(new_pal) > len(pal) {
-                        pal = new_pal
-                    }
-
-                    start--
-                    end++
-                } else {
-                    break
-                }
-            }
+    // Length 2
+    for i := 1; i < n; i++ {
+        if s[i] == s[i-1] {
+            dp[i-1][i] = true
+            idx = i-1
+            max_len = 2
         }
-        // Check for length 3
-        if i<k && k<len(s) && s[i] == s[k] {
-            new_pal := s[i:k+1]
-            if len(new_pal) > len(pal) {
-                pal = new_pal
-            }
-            // Check for length > 3
-            start := i-1
-            end := k+1
-            for start>=0 && end<len(s) {
-                if s[start] == s[end] {
-                    new_pal := s[start:end+1]
-                    if len(new_pal) > len(pal) {
-                        pal = new_pal
-                    }
-                } else {
-                    break
-                }
-
-                start--
-                end++
-            }
-        }
-        i++
-        j++
-        k++
     }
 
-    return pal
+    // Length 3 and above
+    for len := 3; len <= n; len++ {
+        l, r := 0, len-1
+        for r < n {
+            if s[l] == s[r] && dp[l+1][r-1] {
+                dp[l][r] = true
+                idx = l
+                max_len = len
+            }
+            r++
+            l++
+        }
+    }
+
+    return s[idx:idx+max_len]
 }

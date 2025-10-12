@@ -1,33 +1,29 @@
-func solve(s, t string, n, m int, dp [][]int) int {
-    if n < 0 || m < 0 {
+func solve(s string, i, j int, dp [][]int) int {
+    if i >= len(s) || j < 0 {
         return 0
     }
 
-    if dp[n][m] != -1 {
-        return dp[n][m]
+    if dp[i][j] != -1 {
+        return dp[i][j]
     }
 
-    if s[n] == t[m] {
-        dp[n][m] = 1 + solve(s, t, n-1, m-1, dp)
+    if s[i] == s[j] {
+        dp[i][j] = 1 + solve(s, i+1, j-1, dp)
     } else {
-        dp[n][m] = max(solve(s, t, n-1, m, dp), solve(s, t, n, m-1, dp))
+        dp[i][j] = max(solve(s, i+1, j, dp), solve(s, i, j-1, dp))
     }
-    return dp[n][m]
+    
+    return dp[i][j]
 }
 
 func longestPalindromeSubseq(s string) int {
-    n := len(s)
-    var t string
-    for i := n-1; i >= 0; i-- {
-        t += string(s[i])
-    }
-    dp := initDP(n)
-    return solve(s, t, n-1, n-1, dp)
+    dp := initDP(len(s))
+    return solve(s, 0, len(s)-1, dp)
 }
 func initDP(n int) (dp [][]int) {
-    dp = make([][]int, n)
+    dp = make([][]int, n+1)
     for i := range dp {
-        dp[i] = make([]int, n)
+        dp[i] = make([]int, n+1)
         for j := range dp[i] {
             dp[i][j] = -1
         }

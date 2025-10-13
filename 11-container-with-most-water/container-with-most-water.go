@@ -1,20 +1,18 @@
 func maxArea(height []int) int {
-	i, j := 0, len(height)-1
+    i, j := 0, len(height)-1
+    max_water := 0
+    for i < j {
+        l := min(height[i], height[j])
+        b := j - i
 
-	ans := 0
+        water := l * b
+        max_water = max(max_water, water)
 
-	for i <= j {
-		l := j - i
-		h := min(height[i], height[j])
-
-		ans = max(ans, l*h)
-
-		if height[i] < height[j] {
-			i++
-		} else {
-			j--
-		}
-	}
-
-    return ans
+        if height[i] < height[j] {
+            i++
+        } else {
+            j--
+        }
+    }
+    return max_water
 }

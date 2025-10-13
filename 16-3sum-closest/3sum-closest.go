@@ -1,13 +1,13 @@
 func threeSumClosest(nums []int, target int) int {
     sort.Ints(nums)
-    ans := nums[0] + nums[1] + nums[2]
+    closest := 0
+    min_diff := math.MaxInt
+
     for i := range nums {
-        if i > 0 && nums[i] == nums[i-1] {
+        if i != 0 && nums[i] == nums[i-1] {
             continue
         }
-
         l, r := i+1, len(nums)-1
-        
         for l < r {
             sum := nums[i] + nums[l] + nums[r]
 
@@ -15,26 +15,26 @@ func threeSumClosest(nums []int, target int) int {
                 return sum
             }
 
-            diff := abs(target - ans)
-            new_diff := abs(target - sum)
-
-            if new_diff < diff {
-                ans = sum
-            
-            
-            } else if sum > target {
+            diff := abs(target - sum)
+            // Update the closest
+            if diff < min_diff {
+                closest = sum
+                min_diff = diff
+            }
+            // Update the pointers
+            if sum > target {
                 r--
-            } else if sum < target {
+            } else {
                 l++
             }
         }
     }
-    return ans
-}
 
-func abs(a int) int {
-    if a < 0 {
-        return -1 * a
+    return closest
+}
+func abs(x int) int {
+    if x < 0 {
+        return -1 * x
     }
-    return a
+    return x
 }

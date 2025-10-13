@@ -6,43 +6,40 @@
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-	newHead := &ListNode{Val: 0, Next: nil}
-	temp := newHead
+    head := &ListNode{Val: 0, Next: nil}
+    dummy := head
+    carry := 0
+    for l1 != nil || l2 != nil {
+        v1 := getVal(l1)
+        v2 := getVal(l2)
 
-	carry := 0 
+        sum := v1 + v2 + carry
+        carry = sum / 10
 
-	for l1 != nil || l2 != nil {
-		var a, b int
-		a = findVal(l1)
-        b = findVal(l2)
+        newNode := &ListNode{Val: sum%10, Next: nil}
+        dummy.Next = newNode
+        dummy = newNode
 
-		sum := a + b + carry
-		carry = sum / 10
+        if l1 != nil {
+            l1 = l1.Next
+        }
+        if l2 != nil {
+            l2 = l2.Next
+        }
+    }
 
-		temp.Next = &ListNode{Val: sum % 10, Next: nil}
-		temp = temp.Next
+    if carry > 0 {
+        newNode := &ListNode{Val: carry, Next: nil}
+        dummy.Next = newNode
+        dummy = dummy.Next
+    }
 
-        l1 = moveForward(l1)
-        l2 = moveForward(l2)
-	}
-
-	if carry > 0 {
-		temp.Next = &ListNode{Val: carry, Next: nil}
-	}
-
-	return newHead.Next
+    return head.Next
 }
 
-func findVal(l *ListNode) int {
-    if l != nil {
-        return l.Val
+func getVal(l *ListNode) int {
+    if l == nil {
+        return 0
     }
-    return 0
-}
-
-func moveForward(l *ListNode) *ListNode {
-    if l != nil {
-        return l.Next
-    }
-    return nil
+    return l.Val
 }

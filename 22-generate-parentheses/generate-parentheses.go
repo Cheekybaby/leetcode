@@ -1,18 +1,19 @@
-func solve(ans *[]string, temp []byte, open, close, n int) {
+func solve(n, open, close int, temp []byte, ans *[]string) {
     if open == n && close == n {
-        brackets := string(temp)
-        *ans = append(*ans, brackets)
-        return 
+        s := string(temp)
+        *ans = append(*ans, s)
+        return
     }
 
     if open < n {
         temp = append(temp, '(')
-        solve(ans, temp, open+1, close, n)
+        solve(n, open+1, close, temp, ans)
         temp = temp[:len(temp)-1]
     }
+
     if close < open {
         temp = append(temp, ')')
-        solve(ans, temp, open, close+1, n)
+        solve(n, open, close+1, temp, ans)
         temp = temp[:len(temp)-1]
     }
 }
@@ -20,6 +21,6 @@ func solve(ans *[]string, temp []byte, open, close, n int) {
 func generateParenthesis(n int) []string {
     var ans []string
     var temp []byte
-    solve(&ans, temp, 0, 0, n)
+    solve(n, 0, 0, temp, &ans)
     return ans
 }

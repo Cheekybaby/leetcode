@@ -7,18 +7,17 @@ func fourSum(nums []int, target int) [][]int {
         }
 
         for j := i+1; j < len(nums); j++ {
-            if j > i+1 && nums[j] == nums[j-1] {
+            if j > i + 1 && nums[j] == nums[j-1] {
                 continue
             }
 
             l, r := j + 1, len(nums)-1
-
             for l < r {
                 sum := int64(nums[i]) + int64(nums[j]) + int64(nums[l]) + int64(nums[r])
 
                 if sum == int64(target) {
                     quads = append(quads, []int{nums[i], nums[j], nums[l], nums[r]})
-
+                    
                     l++
                     r--
 

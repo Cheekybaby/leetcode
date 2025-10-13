@@ -3,14 +3,13 @@ func longestPalindrome(s string) string {
     dp := make([][]bool, n)
     for i := range dp {
         dp[i] = make([]bool, n)
-        for j := range dp[i] {
-            dp[i][j] = false
-        }
     }
-    max_len := 1
+
     idx := 0
+    max_len := 1
+
     // Length 1
-    for i := range s {
+    for i := 0; i < n; i++ {
         dp[i][i] = true
     }
 
@@ -23,17 +22,17 @@ func longestPalindrome(s string) string {
         }
     }
 
-    // Length 3 and above
-    for len := 3; len <= n; len++ {
-        l, r := 0, len-1
-        for r < n {
-            if s[l] == s[r] && dp[l+1][r-1] {
-                dp[l][r] = true
-                idx = l
-                max_len = len
+    // Length 3 and beyond
+    for length := 3; length <= n; length++ {
+        i, j := 0, length-1
+        for j < n {
+            if s[i] == s[j] && dp[i+1][j-1] {
+                dp[i][j] = true
+                idx = i
+                max_len = length
             }
-            r++
-            l++
+            j++
+            i++
         }
     }
 

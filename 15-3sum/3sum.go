@@ -1,17 +1,18 @@
 func threeSum(nums []int) [][]int {
-    sort.Ints(nums) // Now everything is ordered.
+    sort.Ints(nums)
     var triplets [][]int
     for i := range nums {
-        if i > 0 && nums[i] == nums[i-1] {
+        if i != 0 && nums[i] == nums[i-1] {
             continue
         }
 
-        l, r := i+1, len(nums)-1
+        l, r := i + 1, len(nums)-1
         for l < r {
             sum := nums[i] + nums[l] + nums[r]
 
-            if sum == 0 {
+            if sum == 0 { // We found a triplet
                 triplets = append(triplets, []int{nums[i], nums[l], nums[r]})
+
 
                 l++
                 r--
@@ -29,5 +30,6 @@ func threeSum(nums []int) [][]int {
             }
         }
     }
+
     return triplets
 }

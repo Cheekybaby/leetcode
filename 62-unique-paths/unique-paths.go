@@ -1,21 +1,35 @@
-func uniquePaths(m int, n int) int {
-    dp := make([]int, n)
-    for i := range dp {
-        dp[i] = 1
+func solve(m, n int, dp [][]int) int {
+    if m == 1 && n == 1 {
+        return 1
     }
-    for i := 2; i <= m; i++ {
-        tmp := make([]int, n)
-        for j := 0; j < n; j++ {
-            left := 0
-            if j > 0 {
-                left = tmp[j-1]
-            }   
-            up := dp[j]
-            
-            tmp[j] = left + up
-        }
-        dp = tmp
+    if m < 1 || n < 1 {
+        return 0
     }
 
-    return dp[n-1]
+    if dp[m][n] != -1 {
+        return dp[m][n]
+    }
+
+    left := solve(m, n-1, dp)
+    up := solve(m-1, n, dp)
+
+    dp[m][n] = (left + up)
+
+    return dp[m][n]
+}
+
+func uniquePaths(m int, n int) int {
+    dp := initDP(m, n)
+    return solve(m, n, dp)
+}
+func initDP(m, n int) (dp [][]int) {
+    dp = make([][]int, m+1)
+    for i := range dp {
+        dp[i] = make([]int, n+1)
+        for j := range dp[i] {
+            dp[i][j] = -1
+        }
+    }
+
+    return dp
 }

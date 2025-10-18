@@ -1,35 +1,26 @@
-func solve(s, t string, i, j int, dp [][]int) int {
-	if i == len(s) {
-		return len(t) - j
-	}
-	if j == len(t) {
-		return len(s) - i
-	}
-
-    if dp[i][j] != -1 {
-        return dp[i][j]
+func minDistance(word1 string, word2 string) int {
+    m, n := len(word1), len(word2)
+    dp := make([][]int, m+1)
+    for i := range dp {
+        dp[i] = make([]int, n+1)
     }
 
-	if s[i] == t[j] {
-		dp[i][j] = solve(s, t, i+1, j+1, dp)
-	} else {
-		dp[i][j] = 1 + min(solve(s, t, i+1, j+1, dp), min(solve(s, t, i+1, j, dp), solve(s, t, i, j+1, dp)))
-	}
+    for i := 0; i <= n; i++ {
+        dp[0][i] = i
+    }
+    for i := 0; i <= m; i++ {
+        dp[i][0] = i
+    }
 
-    return dp[i][j]
-}
-
-func minDistance(word1 string, word2 string) int {
-    dp := initDP(len(word1), len(word2))
-	return solve(word1, word2, 0, 0, dp)
-}
-func initDP(n, m int) (dp [][]int) {
-    dp = make([][]int, n+1)
-    for i := range dp {
-        dp[i] = make([]int, m+1)
-        for j := range dp[i] {
-            dp[i][j] = -1
+    for i := 1; i <= m; i++ {
+        for j := 1; j <= n; j++ {
+            if word1[i-1] == word2[j-1] {
+                dp[i][j] = dp[i-1][j-1]
+            } else {
+                dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i][j-1], dp[i-1][j]))
+            }
         }
     }
-    return dp
+
+    return dp[m][n]
 }

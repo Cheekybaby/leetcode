@@ -1,22 +1,26 @@
-func solve(s string, n int, dp []int) int {
-    if n == len(s) {
+func solve(s string, idx int, dp []int) int {
+    if idx == len(s) {
         return 1
     }
-    if s[n] == '0' {
+    if s[idx] == '0' {
         return 0
     }
 
-    if dp[n] != -1 {
-        return dp[n]
+    if dp[idx] != -1 {
+        return dp[idx]
     }
 
-    dp[n] = solve(s, n+1, dp)
+    char := s[idx]
 
-    if (n < len(s)-1) && ((s[n] == '1') || (s[n] == '2' && s[n+1] <= '6')){
-        dp[n] += solve(s, n+2, dp)
+    ways := 0
+    if idx < len(s)-1 && (char == '1' || (char == '2' && s[idx + 1] <= '6')) {
+        ways += solve(s, idx+2, dp)
     }
+    ways += solve(s, idx+1, dp)
 
-    return dp[n]
+    dp[idx] = ways
+
+    return dp[idx]
 }
 
 func numDecodings(s string) int {

@@ -1,36 +1,22 @@
-func solve(s string, idx int, dp []int) int {
-    if idx == len(s) {
-        return 1
-    }
-    if s[idx] == '0' {
+func numDecodings(s string) int {
+    if s[0] == '0' {
         return 0
     }
+    n := len(s)
+    dp := make([]int, n+1)
+    dp[0] = 1
 
-    if dp[idx] != -1 {
-        return dp[idx]
+    for i := 0; i < n; i++ {
+        ways := 0
+        
+        if s[i] != '0' {
+            ways += dp[i]
+        }
+        if i > 0 && (s[i-1] == '1' || (s[i] <= '6' && s[i-1] == '2')) {
+            ways += dp[i-1]
+        }
+        dp[i+1] = ways
     }
 
-    char := s[idx]
-
-    ways := 0
-    if idx < len(s)-1 && (char == '1' || (char == '2' && s[idx + 1] <= '6')) {
-        ways += solve(s, idx+2, dp)
-    }
-    ways += solve(s, idx+1, dp)
-
-    dp[idx] = ways
-
-    return dp[idx]
-}
-
-func numDecodings(s string) int {
-    dp := initDP(len(s))
-    return solve(s, 0, dp)
-}
-func initDP(n int) (dp []int) {
-    dp = make([]int, n+1)
-    for i := range dp {
-        dp[i] = -1
-    }
-    return dp
+    return dp[n]
 }

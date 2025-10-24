@@ -1,29 +1,28 @@
 func minimumTotal(triangle [][]int) int {
     m := len(triangle)
-    dp := make([]int, 1)
-    dp[0] = triangle[0][0]
+    for i := 1; i < m; i++ {
+        n := len(triangle[i])
 
-    for i := 2; i <= m; i++ {
-        n := len(dp)+1
-        tmp := make([]int, n)
         for j := 0; j < n; j++ {
-            left := math.MaxInt
+            prev := math.MaxInt
             if j > 0 {
-                left = dp[j-1]
+                prev = triangle[i-1][j-1]
             }
-            above := math.MaxInt
+            curr := math.MaxInt
             if j < n-1 {
-                above = dp[j]
+                curr = triangle[i-1][j]
             }
 
-            tmp[j] = triangle[i-1][j] + min(left, above)
+            triangle[i][j] = triangle[i][j] + min(prev, curr)
         }
-        dp = tmp
-    }
-    min_cost := dp[0]
-    for i := 0; i < len(dp); i++ {
-        min_cost = min(min_cost, dp[i])
     }
 
-    return min_cost
+    min_path_sum := math.MaxInt
+    n := len(triangle[m-1])
+
+    for i := 0; i < n; i++ {
+        min_path_sum = min(min_path_sum, triangle[m-1][i])
+    }
+
+    return min_path_sum
 }

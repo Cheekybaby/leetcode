@@ -1,22 +1,32 @@
-func numSubarraysWithSum(nums []int, goal int) int {
-    prefix := map[int]int{}
-
+func subarrays(nums []int, goal int) int {
     total := 0
+    i, j := 0, 0
     sum := 0
 
-    for i := range nums {
-        sum += nums[i]
+    for j < len(nums) {
+        sum += nums[j]
 
-        if sum == goal {
-            total++
+        if sum <= goal {
+            total += (j-i+1)
+        } else {
+            for i < j && sum > goal {
+                sum -= nums[i]
+                i++
+            }
+
+            if sum <= goal {
+                total += (j-i+1)
+            }
         }
-
-        if val, ok := prefix[sum - goal]; ok {
-            total += val
-        }
-
-        prefix[sum]++
+        j++
     }
 
     return total
+}
+
+func numSubarraysWithSum(nums []int, goal int) int {
+    longer := subarrays(nums, goal)
+    shorter := subarrays(nums, goal-1)
+
+    return longer - shorter
 }

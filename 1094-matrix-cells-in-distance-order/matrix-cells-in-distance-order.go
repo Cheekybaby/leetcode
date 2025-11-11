@@ -1,28 +1,26 @@
 func allCellsDistOrder(rows int, cols int, rCenter int, cCenter int) [][]int {
-    dist := make(map[int][][]int)
+    var dist [][]int
+
     for i := 0; i < rows; i++ {
         for j := 0; j < cols; j++ {
-            distance := abs(i - rCenter) + abs(j - cCenter)
-            dist[distance] = append(dist[distance], []int{i, j})
-        }
-    }
-    fmt.Println(dist)
-    var sorted [][]int
-    
-    max_dist := (rows + cols)
-    for i := 0; i <= max_dist; i++ {
-        if val, ok := dist[i]; ok {
-            for j := range val {
-                sorted = append(sorted, val[j])
-            }
+            dist = append(dist, []int{i, j})
         }
     }
 
-    return sorted
+    sort.Slice(dist, func(i, j int) bool {
+        d1 := abs(dist[i][0] - rCenter) + abs(dist[i][1] - cCenter)
+        d2 := abs(dist[j][0] - rCenter) + abs(dist[j][1] - cCenter)
+
+        return d1 < d2
+    })
+
+
+    return dist
 }
+
 func abs(x int) int {
     if x < 0 {
-        return - 1 * x
+        return -1 * x
     }
     return x
 }

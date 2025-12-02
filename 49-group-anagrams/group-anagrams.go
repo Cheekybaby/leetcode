@@ -1,19 +1,20 @@
 func groupAnagrams(strs []string) [][]string {
-    set := make(map[string][]string)
+    group := make(map[string][]string)
+
     for i := range strs {
-        str := strs[i]
-        r := []rune(str)
-        sort.Slice(r, func(i, j int) bool {
-            return r[i] < r[j]
+        str := []byte(strs[i])
+
+        sort.Slice(str, func (i, j int) bool {
+            return str[i] < str[j]
         })
-        str = string(r)
-        set[str] = append(set[str], strs[i])
+
+        group[string(str)] = append(group[string(str)], strs[i])
     }
 
-    var groups [][]string
-    for _, val := range set {
-        groups = append(groups, val)
+    var ans [][]string
+    for _, val := range group {
+        ans = append(ans, val)
     }
 
-    return groups
+    return ans
 }

@@ -4,15 +4,9 @@ type MyHashMap struct {
 
 func Constructor() MyHashMap {
 	temp := make([]int, 1000100)
-
-	block := make([]int, 1024)
-	for i := range block {
-		block[i] = -1
-	}
-
-	for i := 0; i < len(temp); i += len(block) {
-		copy(temp[i:], block)
-	}
+    for i := range temp {
+        temp[i] = -1
+    }
 
 	return MyHashMap{
 		hmap: temp,

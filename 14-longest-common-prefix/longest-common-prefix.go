@@ -1,19 +1,16 @@
 func longestCommonPrefix(strs []string) string {
-    ans := strs[0]
-    for i:=1; i<len(strs); i++ {
-        // We check for the longest prefix in the current ans, and the current string
-        ans = newPrefix(ans, strs[i])
-    }
-
-    return ans
-}
-
-func newPrefix(s, p string) string {
-    var i int
-    for i = 0; i < len(s) && i < len(p); i++ {
-        if s[i] != p[i] {
-            break
+    l_pref := []byte(strs[0])
+    for i := 1; i < len(strs); i++ {
+        str := []byte(strs[i])
+        j := 0
+        for ; j < min(len(str), len(l_pref)); j++ {
+            if str[j] != l_pref[j] {
+                break
+            }
         }
+
+        l_pref = str[:j]
     }
-    return s[:i]
+
+    return string(l_pref)
 }

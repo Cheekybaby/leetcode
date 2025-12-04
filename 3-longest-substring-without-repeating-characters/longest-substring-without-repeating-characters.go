@@ -1,23 +1,36 @@
 func lengthOfLongestSubstring(s string) int {
-	n := len(s)
-	max_len := 0
-	i, j := 0, 0
-	var freq [256]int
-	for j < n {
-		char := (s[j])
-		val := freq[char]
+    seen := map[byte]int{}
+    max_len := 0
+    j := 0
+    for i := range s {
+        char := s[i]
+        seen[char]++
+        // if it's already seen, shrink the window
+        if val, ok := seen[char]; ok {
+            for val > 1 {
+                // Now shrink it
+                del := s[j]
+                seen[del]--
 
-		for i < j && val > 0 {
-			ch := (s[i])
-			freq[ch]--
-			val = freq[char]
-			i++
-		}
-		
-        max_len = max(max_len, j-i+1)
-        freq[char]++
-		j++
-	}
+                if v, ok := seen[del]; ok {
+                    if v == 0 {
+                        delete(seen, del)
+                    }
+                }
 
-	return max_len
+                val = 0
+                if v, ok := seen[char]; ok {
+                    val = v
+                }
+
+                j++
+            }
+        }
+        // Now check the length for a valid window
+        len := i - j + 1
+        max_len = max(max_len, len)
+    }
+
+
+    return max_len
 }

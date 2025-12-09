@@ -8,26 +8,29 @@ func findOrder(n int, pre [][]int) []int {
     }
 
     indegree := make([]int, n)
+
     for i := range adj {
-        for _, v := range adj[i] {
-            indegree[v]++
+        for j := range adj[i] {
+            indegree[adj[i][j]]++
         }
     }
 
-    var q []int // queue
-    for i, val := range indegree {
-        if val == 0 {
-            q = append(q, i) // Push
+    var q []int
+
+    for i := range indegree {
+        if indegree[i] == 0 {
+            q = append(q, i)
         }
     }
-    var top_order []int
+
+    var order []int
     for len(q) > 0 {
-        u := q[0] // q.front()
-        q = q[1:] // q.pop()
+        node := q[0]
+        q = q[1:]
 
-        top_order = append(top_order, u)
+        order = append(order, node)
 
-        for _, v := range adj[u] {
+        for _, v := range adj[node] {
             indegree[v]--
 
             if indegree[v] == 0 {
@@ -36,9 +39,9 @@ func findOrder(n int, pre [][]int) []int {
         }
     }
 
-    if len(top_order) == n {
-        return top_order
+    if len(order) != n {
+        return []int{}
     }
 
-    return []int{}
+    return order
 }

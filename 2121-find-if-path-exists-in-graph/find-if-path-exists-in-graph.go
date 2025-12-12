@@ -1,40 +1,46 @@
-func bfs(adj [][]int, source int, destination int, visited []bool) bool {
-    visited[source] = true
-
-    var q []int
-    q = append(q, source)
-
-    for len(q) > 0 {
-        node := q[0]
-        q = q[1:]
-
-        if node == destination {
-            return true
-        }
-
-        for _, v := range adj[node] {
-            if !visited[v] {
-                visited[v] = true
-                q = append(q, v)
-            }
-        }
+func find(x int, parent []int) int {
+    if x == parent[x] {
+        return x
     }
 
-    return false
+    parent[x] = find(parent[x], parent)
+    return parent[x]
+}
+
+func union(source, destination int, parent, rank []int) {
+    source_p := find(source, parent)
+    dest_p := find(destination, parent)
+
+    if source_p == dest_p {
+        return
+    }
+
+    if rank[source_p] > rank[dest_p] {
+        parent[dest_p] = source_p
+    } else if rank[source_p] < rank[dest_p] {
+        parent[source_p] = dest_p
+    } else {
+        parent[source_p] = dest_p
+        rank[dest_p]++
+    }
 }
 
 func validPath(n int, edges [][]int, source int, destination int) bool {
-    adj := make([][]int, n)
-    
+    parent := make([]int, n)
+    for i := range parent {
+        parent[i] = i
+    }
+    rank := make([]int, n)
+
     for _, edge := range edges {
         u := edge[0]
         v := edge[1]
 
-        adj[u] = append(adj[u], v)
-        adj[v] = append(adj[v], u)
+        union(u, v, parent, rank)
     }
-    visited := make([]bool, n)
-    path_exists := bfs(adj, source, destination, visited)
 
-    return path_exists
+    source_p := find(source, parent)
+    dest_p := find(destination, parent)
+
+    return (source_p == dest_p)
 }

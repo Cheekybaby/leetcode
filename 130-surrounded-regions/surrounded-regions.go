@@ -1,12 +1,5 @@
 func bfs(board [][]byte, i, j int) {
-    if i < 0 || i >= len(board) {
-        return 
-    }
-    if j < 0 || j >= len(board[0]) {
-        return
-    }
-
-    if board[i][j] == '1' || board[i][j] == 'X' {
+    if (i < 0 || i >= len(board)) || (j < 0 || j >= len(board[0])) || (board[i][j] == 'X' || board[i][j] == '1') {
         return
     }
 

@@ -1,23 +1,21 @@
 func longestConsecutive(nums []int) int {
-    seen := map[int]bool{}
-    for i := 0; i < len(nums); i++ {
-        seen[nums[i]] = true
+    max_len := 0
+    values := map[int]bool{}
+
+    for _, num := range nums {
+        values[num] = true
     }
 
-    max_len := 0
-
-    for key, _ := range seen {
-        if _, ok := seen[key-1]; !ok {
-            length := 1
-            for length < len(nums) {
-                _, ok := seen[key + length]
-                if ok {
-                    length++
-                } else {
-                    break;
+    for key, _ := range values {
+        if _, ok := values[key-1]; !ok {
+            l := 1
+            for l < len(nums) {
+                if _, ok := values[key+l]; !ok {
+                    break
                 }
+                l++
             }
-            max_len = max(max_len, length)
+            max_len = max(max_len, l)
         }
     }
 

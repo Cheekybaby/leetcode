@@ -1,9 +1,8 @@
-var vowels = map[byte]bool {
-    'a' : true,
-    'e' : true,
-    'i' : true,
-    'o' : true,
-    'u' : true,
+func isVowel(char byte) bool {
+    if char == 'a' || char == 'e' || char == 'i' || char == 'o' || char == 'u' {
+        return true
+    }
+    return false
 }
 
 func maxVowels(s string, k int) int {
@@ -12,12 +11,12 @@ func maxVowels(s string, k int) int {
     i, j := 0, 0
     for j < len(s) {
         char := s[j]
-        if _, ok := vowels[char]; ok {
+        if isVowel(char) {
             cnt++
         }
 
         for (j - i + 1) > k {
-            if _, ok := vowels[s[i]]; ok {
+            if isVowel(s[i]) {
                 cnt--
             }
             i++

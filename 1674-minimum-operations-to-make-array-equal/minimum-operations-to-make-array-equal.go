@@ -1,8 +1,12 @@
 func minOperations(n int) int {
-    min_ops := 0
-    for i := 1; i < n; i+=2 {
-        min_ops += (n - i)
+    if n == 1 {
+        return 0
     }
-
+    min_ops := 0
+    if n & 1 == 0 {
+        min_ops = (n/2) * (n/2)
+    } else {
+        min_ops = (n/2) * (n/2 + 1)
+    }
     return min_ops
 }

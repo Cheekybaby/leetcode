@@ -12,19 +12,17 @@ func findCommonResponse(responses [][]string) string {
         }
     }
 
-    res := []string{}
+    var res string
     max_freq := 0
 
     for key, val := range set {
         if val > max_freq {
             max_freq = val
-            res = []string{key}
-        } else if val == max_freq {
-            res = append(res, key)
+            res = key
+        } else if val == max_freq && (key == "" || key < res) {
+            res = key
         }
     }
 
-    sort.Strings(res)
-
-    return res[0]
+    return res
 }

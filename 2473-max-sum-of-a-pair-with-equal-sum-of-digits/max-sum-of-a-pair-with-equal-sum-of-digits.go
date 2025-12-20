@@ -1,28 +1,20 @@
-func sumOfDigits(num int) int {
-    sum := 0
-    for num > 0 {
-        sum += (num%10)
-        num/=10
-    }
-
-    return sum
-}
-
 func maximumSum(nums []int) int {
-    sort.Ints(nums)
-    poss_pair := map[int][]int{}
-    for i := range nums {
-        key := sumOfDigits(nums[i])
-        poss_pair[key] = append(poss_pair[key], nums[i])
-    }
+    var sum_digits [82]int
     max_sum := -1
-    for _, val := range poss_pair {
-        if len(val) > 1 {
-            p1 := val[len(val)-1]
-            p2 := val[len(val)-2]
-            sum := p1 + p2
+    var sum, n int
+    for i := range nums {
+        for sum, n = 0, nums[i]; n > 0; n/=10 {
+            sum += (n%10)
+        }
 
-            max_sum = max(max_sum, sum)
+        if sum_digits[sum] == 0 {
+            sum_digits[sum] = nums[i]
+        } else {
+            max_sum = max(max_sum, (sum_digits[sum] + nums[i]))
+
+            if nums[i] > sum_digits[sum] {
+                sum_digits[sum] = nums[i]
+            }
         }
     }
 

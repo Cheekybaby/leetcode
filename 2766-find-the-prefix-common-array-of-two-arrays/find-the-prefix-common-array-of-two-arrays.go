@@ -1,18 +1,24 @@
 func findThePrefixCommonArray(A []int, B []int) []int {
     n := len(A)
-    ans, freq := make([]int, n), make([]int, n+1)
-    cnt := 0
-    for i:=0; i<n; i++ {
-        freq[A[i]] += 1
-        if freq[A[i]] == 2 {
-            cnt += 1
+    prefix := make([]int, n+1)
+    map_a, map_b := map[int]bool{}, map[int]bool{}
+    for i := range n {
+        prefix[i+1] = prefix[i]
+        if A[i] == B[i] {
+            prefix[i+1] += 1
+        } else {
+            cnt := 0
+            if _, ok := map_a[B[i]]; ok {
+                cnt++
+            }
+            if _, ok := map_b[A[i]]; ok {
+                cnt++
+            }
+            prefix[i+1] += cnt
         }
-
-        freq[B[i]] += 1
-        if freq[B[i]] == 2 {
-            cnt += 1
-        }
-        ans[i] = cnt
+        map_a[A[i]] = true
+        map_b[B[i]] = true
     }
-    return ans
+
+    return prefix[1:]
 }

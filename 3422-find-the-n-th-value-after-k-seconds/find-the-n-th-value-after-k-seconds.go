@@ -9,7 +9,7 @@ func valueAfterKSeconds(n int, k int) int {
     time := 1
     for time <= k {
         for i := 1; i < n; i++ {
-            pref[i] = ((pref[i-1] % MOD) + (pref[i] % MOD)) % MOD
+            pref[i] = (pref[i-1] + pref[i]) % MOD
         }
         time++
     }

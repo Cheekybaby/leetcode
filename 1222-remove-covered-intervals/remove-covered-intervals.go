@@ -6,7 +6,7 @@ func removeCoveredIntervals(intervals [][]int) int {
         return intervals[i][0] < intervals[j][0]
     })
 
-    merged := [][]int{}
+    cnt := 0
     for i := 0; i < len(intervals); {
         curr := intervals[i]
         j := i + 1
@@ -18,9 +18,9 @@ func removeCoveredIntervals(intervals [][]int) int {
                 break
             }
         }
-        merged = append(merged, curr)
+        cnt++
         i = j
     }
 
-    return len(merged)
+    return cnt
 }

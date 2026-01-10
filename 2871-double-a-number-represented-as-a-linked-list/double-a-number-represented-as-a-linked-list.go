@@ -5,43 +5,28 @@
  *     Next *ListNode
  * }
  */
-
-func reverseLL(head *ListNode) *ListNode {
-    var prev *ListNode = nil
+func doubleIt(head *ListNode) *ListNode {
+    var st []*ListNode
     curr := head
 
     for curr != nil {
-        temp := curr.Next
-        curr.Next = prev
-        prev = curr
-        curr = temp
-    }
-
-    return prev
-}
-
-func doubleIt(head *ListNode) *ListNode {
-    revHead := reverseLL(head)
-
-    curr := revHead
-    carry := 0
-    for curr != nil {
-        val := curr.Val * 2 + carry
-
-        carry = val / 10
-        curr.Val = val % 10
-
-        if curr.Next == nil && carry > 0 {
-            newNode := &ListNode{carry, nil}
-            carry = 0
-            curr.Next = newNode
-            curr = curr.Next
-        }
-
+        st = append(st, curr)
         curr = curr.Next
     }
+    carry := 0
+    for len(st) > 0 {
+        node := st[len(st)-1]
+        st = st[:len(st)-1]
 
-    newHead := reverseLL(revHead)
+        val := node.Val * 2 + carry
+        carry = val / 10
+        node.Val = val % 10
+    }
 
-    return newHead
+    if carry > 0 {
+        newHead := &ListNode{carry, head}
+        return newHead
+    }
+
+    return head
 }

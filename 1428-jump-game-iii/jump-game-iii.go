@@ -1,49 +1,21 @@
 func canReach(arr []int, start int) bool {
     n := len(arr)
-
-    adj := map[int][]int{}
-
-    for i, num := range arr {
-        forward, backward := i + num, i - num
-
-        if forward >= n {
-            forward = -1
+    var dfs func(int)bool
+    dfs = func (idx int) bool {
+        if idx >= n || idx < 0 || arr[idx] < 0 {
+            return false
         }
-        if backward < 0 {
-            backward = -1
+        if arr[idx] == 0 {
+            return true
         }
 
-        if forward != -1 {
-            adj[i] = append(adj[i], forward)
-        }
-        if backward != -1 {
-            adj[i] = append(adj[i], backward)
-        }
+        left := idx - arr[idx]
+        right := idx + arr[idx]
+
+        arr[idx] = -arr[idx]
+
+        return dfs(left) || dfs(right)
     }
 
-    var q []int
-    q = append(q, start)
-    visited := make([]bool, n)
-    for len(q) > 0 {
-        size := len(q)
-        
-        for _ = range size {
-            node := q[0]
-            q = q[1:]
-
-            if arr[node] == 0 {
-                return true
-            }
-
-            visited[node] = true
-
-            for _, v := range adj[node] {
-                if !visited[v] {
-                    q = append(q, v)
-                }
-            }
-        }
-    }
-
-    return false
+    return dfs(start)
 }

@@ -1,41 +1,25 @@
 func maxTurbulenceSize(arr []int) int {
     if len(arr) == 1 { return 1 }
-
-    flag := make([]int, len(arr))
-    flag[0] = 0
-
+    
+    max_len := 0
+    up, down := 1, 1
     for i := 1; i < len(arr); i++ {
-        if arr[i] > arr[i-1] { 
-            flag[i] = 1 
-        } else if arr[i] == arr[i-1] { 
-            flag[i] = 0 
-        } else { 
-            flag[i] = -1
-        }
-    }
-
-    var max_len int
-
-    for i := 0; i < len(flag); {
-        j := i + 1
-        for j < len(flag) {
-            if flag[j] == flag[j-1] || flag[j] == 0 {
-                break
-            }
-            j++
+        if arr[i] > arr[i-1] {
+            up = down + 1
+            down = 1
+        } else if arr[i] < arr[i-1] {
+            down = up + 1
+            up = 1
+        } else {
+            up, down = 1, 1
         }
 
-        length := j - i
-        max_len = max(max_len, length)
-
-        for j < len(flag) && flag[j] == 0 {
-            j++
+        if up > max_len {
+            max_len = up
         }
-
-        if j >= len(flag) { break }
-
-        i = j - 1
-        flag[i] = 0
+        if down > max_len {
+            max_len = down
+        }
     }
 
     return max_len

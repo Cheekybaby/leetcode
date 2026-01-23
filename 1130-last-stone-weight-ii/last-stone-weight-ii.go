@@ -1,40 +1,40 @@
-var dp = make([][]int, 32)
-func solve(nums []int, idx, sum, total int) int {
-    if idx >= len(nums) {
+const OFFSET = 3001
+
+func solve(stones []int, idx int, sum int, total int, dp [][]int) int {
+    if idx >= len(stones) {
         return abs(total - 2 * sum)
     }
 
-    if dp[idx][sum] != -1 {
-        return dp[idx][sum]
+    if dp[idx][sum + OFFSET] != -1 {
+        return dp[idx][sum + OFFSET]
     }
 
-    take := solve(nums, idx+1, sum + nums[idx], total)
-    not_take := solve(nums, idx+1, sum, total)
+    take := solve(stones, idx+1, sum + stones[idx], total, dp)
+    not_take := solve(stones, idx+1, sum, total, dp)
 
-    dp[idx][sum] = min(take, not_take)
-    
-    return dp[idx][sum]
+    dp[idx][sum + OFFSET] = min(take, not_take)
+
+    return dp[idx][sum + OFFSET]
 }
 func lastStoneWeightII(stones []int) int {
-    var total int
-    for _, val := range stones {
-        total += val
-    }
-    initDP()
-    return solve(stones, 0, 0, total)
-}
-
-func initDP() {
+    n := len(stones)
+    dp := make([][]int, n)
     for i := range dp {
-        dp[i] = make([]int, 3001)
+        dp[i] = make([]int, 2 * OFFSET)
         for j := range dp[i] {
             dp[i][j] = -1
         }
     }
+
+    total := 0
+    for _, num := range stones {
+        total += num
+    }
+    return solve(stones, 0, 0, total, dp)
 }
 func abs(x int) int {
     if x < 0 {
-        return -1 * x
+        return -x
     }
     return x
 }

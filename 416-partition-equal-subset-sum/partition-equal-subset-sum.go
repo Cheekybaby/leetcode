@@ -1,46 +1,47 @@
-var dp = make([][]int, 202)
-func solve(nums []int, target, sum, idx int) bool {
+func solve(nums []int, idx, sum, target int, dp [][]int) bool {
     if idx >= len(nums) {
-        return (sum == target)
-    }
-    if target == sum {
-        return true
-    }
-
-    if dp[idx][sum] != -1 {
-        return (dp[idx][sum] == 1)
-    }
-
-    take := solve(nums, target, sum + nums[idx], idx+1)
-    not_take := solve(nums, target, sum, idx+1)
-
-    if (take || not_take) {
-        dp[idx][sum] = 1
-    } else {
-        dp[idx][sum] = 0
-    }
-
-    return (dp[idx][sum] == 1)
-}
-func canPartition(nums []int) bool {
-    sum := 0
-    for _, val := range nums {
-        sum += val
-    }
-    
-    if (sum % 2) == 1 {
+        if sum == target {
+            return true
+        }
         return false
     }
 
-    target := sum/2
-    initDP()
-    return solve(nums, target, 0, 0)
+    if sum > target {
+        return false
+    }
+
+    if dp[idx][sum] != -1 {
+        return dp[idx][sum] == 1
+    }
+
+    not_take := solve(nums, idx+1, sum, target, dp)
+    take := false
+    if sum + nums[idx] <= target {
+        take = solve(nums, idx+1, sum + nums[idx], target, dp)
+    }
+
+    dp[idx][sum] = 0
+    if take || not_take {
+        dp[idx][sum] = 1
+    }
+    return (dp[idx][sum] == 1)
 }
-func initDP() {
+
+func canPartition(nums []int) bool {
+    n := len(nums)
+    total := 0
+    for _, num := range nums {
+        total += num
+    }
+    if (total & 1) == 1 {
+        return false
+    }
+    dp := make([][]int, n)
     for i := range dp {
-        dp[i] = make([]int, 20001)
+        dp[i] = make([]int, total/2 + 1)
         for j := range dp[i] {
             dp[i][j] = -1
         }
     }
+    return solve(nums, 0, 0, total/2, dp)
 }

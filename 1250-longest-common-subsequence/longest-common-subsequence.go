@@ -1,32 +1,28 @@
-func solve(s, t string, n, m int, dp[][]int) int {
-    if (n < 0) || (m < 0) {
+func solve(s, t string, i, j int, dp [][]int) int {
+    if i >= len(s) || j >= len(t) {
         return 0
     }
 
-    if dp[n][m] != -1 {
-        return dp[n][m]
+    if dp[i][j] != -1 {
+        return dp[i][j]
     }
 
-    if s[n] == t[m] {
-        dp[n][m] = 1 + solve(s, t, n-1, m-1, dp)
+    if s[i] == t[j] {
+        dp[i][j] = 1 + solve(s, t, i + 1, j + 1, dp)
     } else {
-        dp[n][m] = max(solve(s, t, n-1, m, dp), solve(s, t, n, m-1, dp))
+        dp[i][j] = max(solve(s, t, i + 1, j, dp), solve(s, t, i, j + 1, dp))
     }
-    return dp[n][m]
+    return dp[i][j]
 }
 
 func longestCommonSubsequence(text1 string, text2 string) int {
-    n, m := len(text1)-1, len(text2)-1
-    dp := initDP(n, m)
-    return solve(text1, text2, n, m, dp)
-}
-func initDP(n, m int) (dp [][]int) {
-    dp = make([][]int, n+1)
+    n, m := len(text1), len(text2)
+    dp := make([][]int, n)
     for i := range dp {
-        dp[i] = make([]int, m+1)
+        dp[i] = make([]int, m)
         for j := range dp[i] {
             dp[i][j] = -1
         }
     }
-    return dp
+    return solve(text1, text2, 0, 0, dp)
 }

@@ -1,49 +1,34 @@
-const MAX = math.MaxInt
-
-func solve(coins []int, amount, idx int, dp [][]int) int {
-    if amount == 0 {
-        return 0
-    }
-    if idx >= len(coins) || amount < 0 {
-        return MAX
-    }
+func solve(coins []int, idx, amount int, dp [][]int) int {
+    if idx < 0 || amount < 0 { return math.MaxInt }
+    if amount == 0 { return 0 }
 
     if dp[idx][amount] != -1 {
         return dp[idx][amount]
     }
 
-    take := MAX
-    if coins[idx] <= amount {
-        val := solve(coins, amount - coins[idx], idx, dp)
-        if val != MAX {
-            take = 1 + val
+    take, not_take := math.MaxInt, math.MaxInt
+    if amount >= coins[idx] {
+        temp := solve(coins, idx, amount - coins[idx], dp)
+        if temp != math.MaxInt {
+            take = 1 + temp
         }
     }
-    not_take := solve(coins, amount, idx+1, dp)
+    not_take = solve(coins, idx-1, amount, dp)
 
     dp[idx][amount] = min(take, not_take)
     return dp[idx][amount]
 }
 
 func coinChange(coins []int, amount int) int {
-    dp := initDP(len(coins), amount)
-    min_coins := solve(coins, amount, 0, dp)
-
-    if min_coins == MAX {
-        return -1
-    }
-
-    return min_coins
-}
-
-func initDP(n, m int) (dp [][]int) {
-    dp = make([][]int, n+1)
+    n := len(coins)
+    dp := make([][]int, n)
     for i := range dp {
-        dp[i] = make([]int, m+1)
+        dp[i] = make([]int, amount + 1)
         for j := range dp[i] {
             dp[i][j] = -1
         }
     }
-
-    return dp
+    ans := solve(coins, len(coins)-1, amount, dp)
+    if ans == math.MaxInt { return -1 }
+    return ans
 }

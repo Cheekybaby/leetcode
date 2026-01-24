@@ -1,18 +1,20 @@
 func generateSubsetSum(nums []int) [][]int {
     m := len(nums)
-    buckets := make([][]int, m+1)
-    total_subsets := (1 << m)
-    for mask:=0; mask < total_subsets; mask++ {
-        count := 0
+    buckets := make([][]int, m + 1)
+    tot_subsets := (1 << m)
+
+    for mask := 0; mask < tot_subsets; mask++ {
+        cnt := 0
         sum := 0
         for i := 0; i < m; i++ {
             if ((mask >> i) & 1) == 1 {
-                count += 1
+                cnt += 1
                 sum += nums[i]
             }
         }
-        buckets[count] = append(buckets[count], sum)
+        buckets[cnt] = append(buckets[cnt], sum)
     }
+
     return buckets
 }
 func minimumDifference(nums []int) int {
@@ -20,63 +22,60 @@ func minimumDifference(nums []int) int {
     left := nums[:n]
     right := nums[n:]
 
-    left_sum_subset := generateSubsetSum(left)
-    right_sum_subset := generateSubsetSum(right)
-
-    for i := range right_sum_subset {
-        sort.Ints(right_sum_subset[i])
+    tot_sum := 0
+    for _, num := range nums {
+        tot_sum += num
     }
-    var total int 
-    for _, val := range nums {
-        total += val
+
+    left_subset := generateSubsetSum(left)
+    right_subset := generateSubsetSum(right)
+
+    for i := range right_subset {
+        sort.Ints(right_subset[i])
     }
-    
-    minDiff := math.MaxInt
 
-    for k := 0; k < n; k++ {
-        for _, sumLeft := range left_sum_subset[k] {
-            pair := (n - k)
-            candidates := right_sum_subset[pair]
-            target := (total / 2 - sumLeft)
+    min_diff := math.MaxInt
+    for i := range left_subset {
+        for j := range left_subset[i] {
+            l := left_subset[i][j]
+            to_find := (tot_sum / 2 ) - l
+            r := binarySearch(right_subset[n - i], to_find)
 
-            sumRight := binarySearch(candidates, target)
+            sum := l + r
+            diff := abs(tot_sum - (2 * sum))
 
-            sumL := sumLeft + sumRight
-            diff := abs(total - (2 * sumL))
-
-            minDiff = min(minDiff, diff)
+            min_diff = min(min_diff, diff)
         }
     }
+    return min_diff
+}
 
-    return minDiff
-}
-func abs (x int) int {
-    if x < 0 {
-        return -1 * x
-    }
-    return x
-}
 func binarySearch(nums []int, target int) int {
-    left, right := 0, len(nums)-1
-    for left <= right {
-        mid := (left + (right - left)/2)
+    l, r := 0, len(nums)-1
+    for l <= r {
+        mid := l + (r - l)/2
+
         if nums[mid] == target {
             return nums[mid]
         } else if nums[mid] > target {
-            right = mid - 1
+            r = mid - 1
         } else {
-            left = mid + 1
+            l = mid + 1
         }
     }
-    if left >= len(nums) {
-        return nums[right]
-    } else if right < 0 {
-        return nums[left]
-    }
 
-    if abs(nums[left] - target) < abs(nums[right] - target) {
-        return nums[left]
-    } else {
-        return nums[right]
+    if r < 0 { return nums[l] }
+    if l >= len(nums) { return nums[r] }
+
+    if abs(nums[l] - target) < abs(nums[r] - target) {
+        return nums[l]
     }
+    return nums[r]
+}
+
+func abs(x int) int {
+    if x < 0 {
+        return -x
+    }
+    return x
 }

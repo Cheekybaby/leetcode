@@ -1,20 +1,22 @@
 func trap(height []int) int {
-    i, j := 1, len(height)-2
-    lmax, rmax := height[0], height[len(height)-1]
     total_water := 0
+    l, r := 1, len(height)-2
+    l_max, r_max := height[l-1], height[r+1]
 
-    for i <= j {
+    for l <= r {
         water := 0
-        if lmax >= rmax {
-            water = max(0, rmax - height[j])
-            rmax = max(rmax, height[j])
-            j--
+
+        if l_max > r_max {
+            water = max(0, (r_max - height[r]))
+            r_max = max(r_max, height[r])
+            r--
         } else {
-            water = max(0, lmax - height[i])
-            lmax = max(lmax, height[i])
-            i++
+            water = max(0, (l_max - height[l]))
+            l_max = max(l_max, height[l])
+            l++
         }
         total_water += water
     }
+
     return total_water
 }

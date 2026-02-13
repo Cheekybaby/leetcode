@@ -1,15 +1,14 @@
-# Write your MySQL query statement below
-SELECT 
-    st.machine_id,
-    ROUND(AVG(end.timestamp - st.timestamp), 3) as processing_time
-FROM 
-    Activity as st
-CROSS JOIN Activity as end
-    ON (
-            st.machine_id = end.machine_id
-        AND st.process_id = end.process_id
-        AND st.activity_type = "start"
-        AND end.activity_type = "end"
-    )
-GROUP BY st.machine_id
-;
+-- Write your PostgreSQL query statement below
+SELECT
+    machine_id,
+    ROUND(AVG(process_time)::numeric, 3) AS processing_time
+FROM (
+    SELECT
+        machine_id,
+        process_id,
+        MAX(CASE WHEN activity_type = 'end' THEN timestamp END) -
+        MAX(CASE WHEN activity_type = 'start' THEN timestamp END) AS process_time
+    FROM Activity
+    GROUP BY machine_id, process_id
+) t
+GROUP BY machine_id;

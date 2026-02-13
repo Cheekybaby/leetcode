@@ -1,9 +1,7 @@
-# Write your MySQL query statement below
-SELECT 
-    today.id
-FROM 
-    Weather as today
-CROSS JOIN Weather as yesterday
-WHERE DATEDIFF(today.recordDate, yesterday.recordDate) = 1
-    AND today.temperature > yesterday.temperature
+-- Write your PostgreSQL query statement below
+SELECT T.id
+FROM Weather T
+CROSS JOIN Weather Y
+WHERE (T.recordDate - Y.recordDate) = 1
+    AND T.temperature > Y.temperature
 ;

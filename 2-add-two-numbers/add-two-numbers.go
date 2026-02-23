@@ -6,40 +6,37 @@
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-    head := &ListNode{Val: 0, Next: nil}
-    dummy := head
+    head := &ListNode{}
+    temp := head
     carry := 0
     for l1 != nil || l2 != nil {
-        v1 := getVal(l1)
-        v2 := getVal(l2)
+        x := getVal(l1)
+        y := getVal(l2)
 
-        sum := v1 + v2 + carry
+        node := &ListNode{}
+
+        sum := x + y + carry
         carry = sum / 10
 
-        newNode := &ListNode{Val: sum%10, Next: nil}
-        dummy.Next = newNode
-        dummy = newNode
+        node.Val = sum % 10
+        temp.Next = node
 
-        if l1 != nil {
-            l1 = l1.Next
-        }
-        if l2 != nil {
-            l2 = l2.Next
-        }
+        temp = temp.Next
+        if l1 != nil { l1 = l1.Next }
+        if l2 != nil { l2 = l2.Next }
     }
 
     if carry > 0 {
-        newNode := &ListNode{Val: carry, Next: nil}
-        dummy.Next = newNode
-        dummy = dummy.Next
+        node := &ListNode{carry, nil}
+        temp.Next = node
     }
 
     return head.Next
 }
 
 func getVal(l *ListNode) int {
-    if l == nil {
-        return 0
+    if l != nil {
+        return l.Val
     }
-    return l.Val
+    return 0
 }

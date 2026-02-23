@@ -1,41 +1,30 @@
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-    size := len(nums1) + len(nums2)
-    nums := make([]int, size)
+    merged := []int{}
 
-    i, j, k := 0, 0, 0
+    i, j := 0, 0
 
-    for i < len(nums1) && j < len(nums2) {
-        if nums1[i] <= nums2[j] {
-            nums[k] = nums1[i]
-            i+=1
+    for i < len(nums1) || j < len(nums2) {
+        x := getVal(nums1, i)
+        y := getVal(nums2, j)
+
+        if x < y {
+            merged = append(merged, x)
+            i++
         } else {
-            nums[k] = nums2[j]
-            j+=1
+            merged = append(merged, y)
+            j++
         }
-        k+=1
     }
 
-    for i < len(nums1) {
-        nums[k] = nums1[i]
-        i+=1
-        k+=1
-    }
-    for j < len(nums2) {
-        nums[k] = nums2[j]
-        j+=1
-        k+=1
-    }
+    n := len(merged)
 
-    
-    if isOdd(size) {
-        return float64(nums[size/2])
+    if (n & 1) == 1 {
+        return float64(merged[n/2])
     }
-    return float64((nums[size/2] + nums[(size/2)-1]))/2
+    return float64(merged[n/2] + merged[(n/2) - 1]) / float64(2)
 }
 
-func isOdd(size int) bool {
-    if size % 2 == 0 {
-        return false
-    }
-    return true
+func getVal(nums []int, idx int) int {
+    if idx < len(nums) { return nums[idx] }
+    return math.MaxInt
 }

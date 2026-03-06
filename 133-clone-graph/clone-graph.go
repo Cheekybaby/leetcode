@@ -7,39 +7,36 @@
  */
 
 func cloneGraph(node *Node) *Node {
-    if node == nil {
-        return node
-    }
+    if node == nil { return node }
 
-    mapping := map[*Node]*Node{}
+    pair := make(map[*Node]*Node)
 
     var q []*Node
     q = append(q, node)
-
     for len(q) > 0 {
         curr := q[0]
         q = q[1:]
 
-        newCurr := &Node{Val : curr.Val, Neighbors : []*Node{}}
-        mapping[curr] = newCurr
+        newNode := &Node{}
+        newNode.Val = curr.Val
+        newNode.Neighbors = []*Node{}
 
-        for _, v := range curr.Neighbors {
-            if _, ok := mapping[v]; !ok {
-                q = append(q, v)
-            }
+        pair[curr] = newNode
+
+        for _, n := range curr.Neighbors {
+            if _, ok := pair[n]; ok { continue }
+            q = append(q, n)
         }
     }
 
-    for key, val := range mapping {
-        neigh := make([]*Node, len(key.Neighbors))
-
-        for i, v := range key.Neighbors {
-            neigh[i] = mapping[v]
+    for key, val := range pair {
+        newNode := val
+        var neighbors []*Node
+        for _, v := range key.Neighbors {
+            neighbors = append(neighbors, pair[v])
         }
-
-        val.Neighbors = neigh
+        newNode.Neighbors = neighbors
     }
 
-
-    return mapping[node]
+    return pair[node]
 }

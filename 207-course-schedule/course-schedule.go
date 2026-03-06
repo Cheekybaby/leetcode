@@ -1,37 +1,20 @@
-func canFinish(n int, pre [][]int) bool {
-    adj := make([][]int, n)
-
-    for i := range pre {
-        u := pre[i][1]
-        v := pre[i][0]
-
-        adj[u] = append(adj[u], v)
-    }
-
-    indegree := make([]int, n)
-
-    for i := range adj {
-        for j := range adj[i] {
-            indegree[adj[i][j]]++
-        }
-    }
-
+func kahnsAlgorithm(adj [][]int, indegree []int) bool {
     var q []int
-
-    for i := range indegree {
-        if indegree[i] == 0 {
+    for i, val := range indegree {
+        if val == 0 {
             q = append(q, i)
         }
     }
 
-    cnt := 0
+    var sorted []int
+
     for len(q) > 0 {
-        curr := q[0]
+        node := q[0]
         q = q[1:]
 
-        cnt++
+        sorted = append(sorted, node)
 
-        for _, v := range adj[curr] {
+        for _, v := range adj[node] {
             indegree[v]--
 
             if indegree[v] == 0 {
@@ -40,9 +23,24 @@ func canFinish(n int, pre [][]int) bool {
         }
     }
 
-    if cnt == n {
-        return true
+    return (len(sorted) == len(adj))
+}
+
+func canFinish(numCourses int, prerequisites [][]int) bool {
+    adj := make([][]int, numCourses)
+    for _, course := range prerequisites {
+        u := course[1]
+        v := course[0]
+
+        adj[u] = append(adj[u], v)
+    }
+    indegree := make([]int, numCourses)
+    for _, outgoing := range adj {
+        for _, v := range outgoing {
+            indegree[v]++
+        }
     }
 
-    return false
+    // call kahn's algorithm right here 
+    return kahnsAlgorithm(adj, indegree)
 }

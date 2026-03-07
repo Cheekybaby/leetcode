@@ -1,47 +1,44 @@
-func findOrder(n int, pre [][]int) []int {
-    adj := make([][]int, n)
-    for i := range pre {
-        u := pre[i][1]
-        v := pre[i][0]
-
-        adj[u] = append(adj[u], v)
-    }
-
+func topoSort(adj [][]int) (sorted []int) {
+    n := len(adj)
     indegree := make([]int, n)
-
-    for i := range adj {
-        for j := range adj[i] {
-            indegree[adj[i][j]]++
+    for _, v := range adj {
+        for _, val := range v {
+            indegree[val]++
         }
     }
-
+    
     var q []int
-
-    for i := range indegree {
-        if indegree[i] == 0 {
-            q = append(q, i)
-        }
+    for i, u := range indegree {
+        if u == 0 { q = append(q, i) }
     }
 
-    var order []int
     for len(q) > 0 {
         node := q[0]
         q = q[1:]
 
-        order = append(order, node)
+        sorted = append(sorted, node)
 
         for _, v := range adj[node] {
             indegree[v]--
 
-            if indegree[v] == 0 {
-                q = append(q, v)
-            }
+            if indegree[v] == 0 { q = append(q, v) }
         }
     }
 
-    if len(order) != n {
-        return []int{}
+    return sorted
+}
+
+func findOrder(numCourses int, prerequisites [][]int) []int {
+    adj := make([][]int, numCourses)
+    for _, course := range prerequisites {
+        u := course[1]
+        v := course[0]
+
+        adj[u] = append(adj[u], v)
     }
 
-    return order
+    sorted := topoSort(adj)
+
+    if len(sorted) != numCourses { return []int{} }
+    return sorted
 }

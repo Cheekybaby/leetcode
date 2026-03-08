@@ -1,45 +1,51 @@
-func findItinerary(tickets [][]string) []string {
-    adj := make(map[string][]string)
+func dfs(adj map[string][]string, root string, path *[]string) {
+    var st []string
+    st = append(st, root)
 
-    for i := range tickets {
-        from := tickets[i][0]
-        to := tickets[i][1]
+    for len(st) > 0 {
+        node := st[len(st)-1]
+
+        if len(adj[node]) > 0 {
+            // we need this to be in the stack right now
+            dest := adj[node][0]
+            st = append(st, dest)
+            adj[node] = adj[node][1:]
+        } else {
+            // we can push it in the path
+            *path = append(*path, node)
+            st = st[:len(st)-1]
+        }
+    }
+}
+
+func findItinerary(tickets [][]string) []string {
+    adj := map[string][]string{}
+    for _, ticket := range tickets {
+        from := ticket[0]
+        to := ticket[1]
 
         adj[from] = append(adj[from], to)
     }
 
-    for _, val := range adj {
-        sort.Strings(val)
+    for _, dest := range adj {
+        sort.Strings(dest)
     }
 
-    var itenaries []string
+    fmt.Println(adj)
 
+    var start string = "JFK"
+    var path []string
+    dfs(adj, start, &path)
 
-    var st []string
-    st = append(st, "JFK")
+    reverse(path)
 
-    for len(st) > 0 {
-        curr_airport := st[len(st)-1]
-
-        dest, ok := adj[curr_airport]
-        if ok && len(dest) > 0 {
-            st = append(st, dest[0])
-            dest = dest[1:]
-            adj[curr_airport] = dest
-        } else {
-            itenaries = append(itenaries, curr_airport)
-            st = st[:len(st)-1]
-        }
-    }
-
-    reverse(itenaries)
-
-    return itenaries
+    return path
 }
-func reverse(s []string) {
-    i, j := 0, len(s)-1
+
+func reverse(path []string) {
+    i, j := 0, len(path)-1
     for i < j {
-        s[i], s[j] = s[j], s[i]
+        path[i], path[j] = path[j], path[i]
         i++
         j--
     }

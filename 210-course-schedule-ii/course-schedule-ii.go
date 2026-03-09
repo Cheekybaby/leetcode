@@ -1,44 +1,40 @@
-func topoSort(adj [][]int) (sorted []int) {
-    n := len(adj)
-    indegree := make([]int, n)
-    for _, v := range adj {
-        for _, val := range v {
-            indegree[val]++
-        }
-    }
-    
+func bfs(adj [][]int, indegree []int) (order []int) {
     var q []int
-    for i, u := range indegree {
-        if u == 0 { q = append(q, i) }
+    for i, val := range indegree {
+        if val == 0 { q = append(q, i) }
     }
 
     for len(q) > 0 {
-        node := q[0]
+        curr := q[0]
         q = q[1:]
 
-        sorted = append(sorted, node)
+        order = append(order, curr)
 
-        for _, v := range adj[node] {
+        for _, v := range adj[curr] {
             indegree[v]--
 
             if indegree[v] == 0 { q = append(q, v) }
         }
     }
 
-    return sorted
+    return order
 }
 
 func findOrder(numCourses int, prerequisites [][]int) []int {
     adj := make([][]int, numCourses)
+    indegree := make([]int, numCourses)
     for _, course := range prerequisites {
         u := course[1]
         v := course[0]
 
         adj[u] = append(adj[u], v)
+        indegree[v]++
     }
 
-    sorted := topoSort(adj)
+    order := bfs(adj, indegree)
 
-    if len(sorted) != numCourses { return []int{} }
-    return sorted
+    if len(order) != numCourses {
+        return []int{}
+    }
+    return order
 }

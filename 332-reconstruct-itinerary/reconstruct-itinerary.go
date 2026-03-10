@@ -1,4 +1,4 @@
-func dfs(adj map[string][]string, root string, path *[]string) {
+func dfs(adj map[string][]string, root string) (order []string) {
     var st []string
     st = append(st, root)
 
@@ -6,46 +6,46 @@ func dfs(adj map[string][]string, root string, path *[]string) {
         node := st[len(st)-1]
 
         if len(adj[node]) > 0 {
-            // we need this to be in the stack right now
-            dest := adj[node][0]
-            st = append(st, dest)
+            // still got places to go
+            to := adj[node][0]
             adj[node] = adj[node][1:]
+            st = append(st, to)
         } else {
-            // we can push it in the path
-            *path = append(*path, node)
+            order = append(order, node)
             st = st[:len(st)-1]
         }
     }
-}
 
+    return order
+}
 func findItinerary(tickets [][]string) []string {
     adj := map[string][]string{}
+    indegree, outdegree := map[string]int{}, map[string]int{}
     for _, ticket := range tickets {
         from := ticket[0]
         to := ticket[1]
 
         adj[from] = append(adj[from], to)
+
+        indegree[to]++
+        outdegree[from]++
     }
 
-    for _, dest := range adj {
-        sort.Strings(dest)
+    for _, val := range adj {
+        sort.Strings(val)
     }
+    var root string = "JFK"
+    order := dfs(adj, root)
 
-    fmt.Println(adj)
+    reverse(order)
 
-    var start string = "JFK"
-    var path []string
-    dfs(adj, start, &path)
-
-    reverse(path)
-
-    return path
+    return order
 }
 
-func reverse(path []string) {
-    i, j := 0, len(path)-1
+func reverse(strs []string) {
+    i, j := 0, len(strs)-1
     for i < j {
-        path[i], path[j] = path[j], path[i]
+        strs[i], strs[j] = strs[j], strs[i]
         i++
         j--
     }

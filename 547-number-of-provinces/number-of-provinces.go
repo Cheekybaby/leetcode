@@ -1,25 +1,24 @@
 func dfs(adj [][]int, root int, visited []bool) {
     visited[root] = true
 
-    for i, v := range adj[root] {
-        if v == 1 && !visited[i] {
-            dfs(adj, i, visited)
+    for v, isConnected := range adj[root] {
+        if isConnected == 1 && !visited[v] {
+            dfs(adj, v, visited)
         }
     }
 }
 
 func findCircleNum(isConnected [][]int) int {
-    // we are given adjacency matrix
     n := len(isConnected)
-    visited := make([]bool, n)
 
-    var province int
+    visited := make([]bool, n)
+    var provinces int
     for i := 0; i < n; i++ {
-        if !visited[i] {
+        if (!visited[i]) {
             dfs(isConnected, i, visited)
-            province++
+            provinces++
         }
     }
 
-    return province
+    return provinces
 }
